@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="generator" content="Asciidoctor 2.0.23">
+<title>Testing Erroneous Cases</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700">
+<style>
+/*! Asciidoctor default stylesheet | MIT License | https://asciidoctor.org */
+/* Uncomment the following line when using as a custom stylesheet */
+/* @import "https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic%7CNoto+Serif:400,400italic,700,700italic%7CDroid+Sans+Mono:400,700"; */
+html{font-family:sans-serif;-webkit-text-size-adjust:100%}
+a{background:none}
+a:focus{outline:thin dotted}
+a:active,a:hover{outline:0}
+h1{font-size:2em;margin:.67em 0}
+b,strong{font-weight:bold}
+abbr{font-size:.9em}
+abbr[title]{cursor:help;border-bottom:1px dotted #dddddf;text-decoration:none}
+dfn{font-style:italic}
+hr{height:0}
+mark{background:#ff0;color:#000}
+code,kbd,pre,samp{font-family:monospace;font-size:1em}
+pre{white-space:pre-wrap}
+q{quotes:"\201C" "\201D" "\2018" "\2019"}
+small{font-size:80%}
+sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}
+sup{top:-.5em}
+sub{bottom:-.25em}
+img{border:0}
+svg:not(:root){overflow:hidden}
+figure{margin:0}
+audio,video{display:inline-block}
+audio:not([controls]){display:none;height:0}
+fieldset{border:1px solid silver;margin:0 2px;padding:.35em .625em .75em}
+legend{border:0;padding:0}
+button,input,select,textarea{font-family:inherit;font-size:100%;margin:0}
+button,input{line-height:normal}
+button,select{text-transform:none}
+button,html input[type=button],input[type=reset],input[type=submit]{-webkit-appearance:button;cursor:pointer}
+button[disabled],html input[disabled]{cursor:default}
+input[type=checkbox],input[type=radio]{padding:0}
+button::-moz-focus-inner,input::-moz-focus-inner{border:0;padding:0}
+textarea{overflow:auto;vertical-align:top}
+table{border-collapse:collapse;border-spacing:0}
+*,::before,::after{box-sizing:border-box}
+html,body{font-size:100%}
+body{background:#fff;color:rgba(0,0,0,.8);padding:0;margin:0;font-family:"Noto Serif","DejaVu Serif",serif;line-height:1;position:relative;cursor:auto;-moz-tab-size:4;-o-tab-size:4;tab-size:4;word-wrap:anywhere;-moz-osx-font-smoothing:grayscale;-webkit-font-smoothing:antialiased}
+a:hover{cursor:pointer}
+img,object,embed{max-width:100%;height:auto}
+object,embed{height:100%}
+img{-ms-interpolation-mode:bicubic}
+.left{float:left!important}
+.right{float:right!important}
+.text-left{text-align:left!important}
+.text-right{text-align:right!important}
+.text-center{text-align:center!important}
+.text-justify{text-align:justify!important}
+.hide{display:none}
+img,object,svg{display:inline-block;vertical-align:middle}
+textarea{height:auto;min-height:50px}
+select{width:100%}
+.subheader,.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{line-height:1.45;color:#7a2518;font-weight:400;margin-top:0;margin-bottom:.25em}
+div,dl,dt,dd,ul,ol,li,h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6,pre,form,p,blockquote,th,td{margin:0;padding:0}
+a{color:#2156a5;text-decoration:underline;line-height:inherit}
+a:hover,a:focus{color:#1d4b8f}
+a img{border:0}
+p{line-height:1.6;margin-bottom:1.25em;text-rendering:optimizeLegibility}
+p aside{font-size:.875em;line-height:1.35;font-style:italic}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{font-family:"Open Sans","DejaVu Sans",sans-serif;font-weight:300;font-style:normal;color:#ba3925;text-rendering:optimizeLegibility;margin-top:1em;margin-bottom:.5em;line-height:1.0125em}
+h1 small,h2 small,h3 small,#toctitle small,.sidebarblock>.content>.title small,h4 small,h5 small,h6 small{font-size:60%;color:#e99b8f;line-height:0}
+h1{font-size:2.125em}
+h2{font-size:1.6875em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.375em}
+h4,h5{font-size:1.125em}
+h6{font-size:1em}
+hr{border:solid #dddddf;border-width:1px 0 0;clear:both;margin:1.25em 0 1.1875em}
+em,i{font-style:italic;line-height:inherit}
+strong,b{font-weight:bold;line-height:inherit}
+small{font-size:60%;line-height:inherit}
+code{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;font-weight:400;color:rgba(0,0,0,.9)}
+ul,ol,dl{line-height:1.6;margin-bottom:1.25em;list-style-position:outside;font-family:inherit}
+ul,ol{margin-left:1.5em}
+ul li ul,ul li ol{margin-left:1.25em;margin-bottom:0}
+ul.circle{list-style-type:circle}
+ul.disc{list-style-type:disc}
+ul.square{list-style-type:square}
+ul.circle ul:not([class]),ul.disc ul:not([class]),ul.square ul:not([class]){list-style:inherit}
+ol li ul,ol li ol{margin-left:1.25em;margin-bottom:0}
+dl dt{margin-bottom:.3125em;font-weight:bold}
+dl dd{margin-bottom:1.25em}
+blockquote{margin:0 0 1.25em;padding:.5625em 1.25em 0 1.1875em;border-left:1px solid #ddd}
+blockquote,blockquote p{line-height:1.6;color:rgba(0,0,0,.85)}
+@media screen and (min-width:768px){h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2}
+h1{font-size:2.75em}
+h2{font-size:2.3125em}
+h3,#toctitle,.sidebarblock>.content>.title{font-size:1.6875em}
+h4{font-size:1.4375em}}
+table{background:#fff;margin-bottom:1.25em;border:1px solid #dedede;word-wrap:normal}
+table thead,table tfoot{background:#f7f8f7}
+table thead tr th,table thead tr td,table tfoot tr th,table tfoot tr td{padding:.5em .625em .625em;font-size:inherit;color:rgba(0,0,0,.8);text-align:left}
+table tr th,table tr td{padding:.5625em .625em;font-size:inherit;color:rgba(0,0,0,.8)}
+table tr.even,table tr.alt{background:#f8f8f7}
+table thead tr th,table tfoot tr th,table tbody tr td,table tr td,table tfoot tr td{line-height:1.6}
+h1,h2,h3,#toctitle,.sidebarblock>.content>.title,h4,h5,h6{line-height:1.2;word-spacing:-.05em}
+h1 strong,h2 strong,h3 strong,#toctitle strong,.sidebarblock>.content>.title strong,h4 strong,h5 strong,h6 strong{font-weight:400}
+.center{margin-left:auto;margin-right:auto}
+.stretch{width:100%}
+.clearfix::before,.clearfix::after,.float-group::before,.float-group::after{content:" ";display:table}
+.clearfix::after,.float-group::after{clear:both}
+:not(pre).nobreak{word-wrap:normal}
+:not(pre).nowrap{white-space:nowrap}
+:not(pre).pre-wrap{white-space:pre-wrap}
+:not(pre):not([class^=L])>code{font-size:.9375em;font-style:normal!important;letter-spacing:0;padding:.1em .5ex;word-spacing:-.15em;background:#f7f7f8;border-radius:4px;line-height:1.45;text-rendering:optimizeSpeed}
+pre{color:rgba(0,0,0,.9);font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;line-height:1.45;text-rendering:optimizeSpeed}
+pre code,pre pre{color:inherit;font-size:inherit;line-height:inherit}
+pre>code{display:block}
+pre.nowrap,pre.nowrap pre{white-space:pre;word-wrap:normal}
+em em{font-style:normal}
+strong strong{font-weight:400}
+.keyseq{color:rgba(51,51,51,.8)}
+kbd{font-family:"Droid Sans Mono","DejaVu Sans Mono",monospace;display:inline-block;color:rgba(0,0,0,.8);font-size:.65em;line-height:1.45;background:#f7f7f7;border:1px solid #ccc;border-radius:3px;box-shadow:0 1px 0 rgba(0,0,0,.2),inset 0 0 0 .1em #fff;margin:0 .15em;padding:.2em .5em;vertical-align:middle;position:relative;top:-.1em;white-space:nowrap}
+.keyseq kbd:first-child{margin-left:0}
+.keyseq kbd:last-child{margin-right:0}
+.menuseq,.menuref{color:#000}
+.menuseq b:not(.caret),.menuref{font-weight:inherit}
+.menuseq{word-spacing:-.02em}
+.menuseq b.caret{font-size:1.25em;line-height:.8}
+.menuseq i.caret{font-weight:bold;text-align:center;width:.45em}
+b.button::before,b.button::after{position:relative;top:-1px;font-weight:400}
+b.button::before{content:"[";padding:0 3px 0 2px}
+b.button::after{content:"]";padding:0 2px 0 3px}
+p a>code:hover{color:rgba(0,0,0,.9)}
+#header,#content,#footnotes,#footer{width:100%;margin:0 auto;max-width:62.5em;*zoom:1;position:relative;padding-left:.9375em;padding-right:.9375em}
+#header::before,#header::after,#content::before,#content::after,#footnotes::before,#footnotes::after,#footer::before,#footer::after{content:" ";display:table}
+#header::after,#content::after,#footnotes::after,#footer::after{clear:both}
+#content{margin-top:1.25em}
+#content::before{content:none}
+#header>h1:first-child{color:rgba(0,0,0,.85);margin-top:2.25rem;margin-bottom:0}
+#header>h1:first-child+#toc{margin-top:8px;border-top:1px solid #dddddf}
+#header>h1:only-child{border-bottom:1px solid #dddddf;padding-bottom:8px}
+#header .details{border-bottom:1px solid #dddddf;line-height:1.45;padding-top:.25em;padding-bottom:.25em;padding-left:.25em;color:rgba(0,0,0,.6);display:flex;flex-flow:row wrap}
+#header .details span:first-child{margin-left:-.125em}
+#header .details span.email a{color:rgba(0,0,0,.85)}
+#header .details br{display:none}
+#header .details br+span::before{content:"\00a0\2013\00a0"}
+#header .details br+span.author::before{content:"\00a0\22c5\00a0";color:rgba(0,0,0,.85)}
+#header .details br+span#revremark::before{content:"\00a0|\00a0"}
+#header #revnumber{text-transform:capitalize}
+#header #revnumber::after{content:"\00a0"}
+#content>h1:first-child:not([class]){color:rgba(0,0,0,.85);border-bottom:1px solid #dddddf;padding-bottom:8px;margin-top:0;padding-top:1rem;margin-bottom:1.25rem}
+#toc{border-bottom:1px solid #e7e7e9;padding-bottom:.5em}
+#toc>ul{margin-left:.125em}
+#toc ul.sectlevel0>li>a{font-style:italic}
+#toc ul.sectlevel0 ul.sectlevel1{margin:.5em 0}
+#toc ul{font-family:"Open Sans","DejaVu Sans",sans-serif;list-style-type:none}
+#toc li{line-height:1.3334;margin-top:.3334em}
+#toc a{text-decoration:none}
+#toc a:active{text-decoration:underline}
+#toctitle{color:#7a2518;font-size:1.2em}
+@media screen and (min-width:768px){#toctitle{font-size:1.375em}
+body.toc2{padding-left:15em;padding-right:0}
+body.toc2 #header>h1:nth-last-child(2){border-bottom:1px solid #dddddf;padding-bottom:8px}
+#toc.toc2{margin-top:0!important;background:#f8f8f7;position:fixed;width:15em;left:0;top:0;border-right:1px solid #e7e7e9;border-top-width:0!important;border-bottom-width:0!important;z-index:1000;padding:1.25em 1em;height:100%;overflow:auto}
+#toc.toc2 #toctitle{margin-top:0;margin-bottom:.8rem;font-size:1.2em}
+#toc.toc2>ul{font-size:.9em;margin-bottom:0}
+#toc.toc2 ul ul{margin-left:0;padding-left:1em}
+#toc.toc2 ul.sectlevel0 ul.sectlevel1{padding-left:0;margin-top:.5em;margin-bottom:.5em}
+body.toc2.toc-right{padding-left:0;padding-right:15em}
+body.toc2.toc-right #toc.toc2{border-right-width:0;border-left:1px solid #e7e7e9;left:auto;right:0}}
+@media screen and (min-width:1280px){body.toc2{padding-left:20em;padding-right:0}
+#toc.toc2{width:20em}
+#toc.toc2 #toctitle{font-size:1.375em}
+#toc.toc2>ul{font-size:.95em}
+#toc.toc2 ul ul{padding-left:1.25em}
+body.toc2.toc-right{padding-left:0;padding-right:20em}}
+#content #toc{border:1px solid #e0e0dc;margin-bottom:1.25em;padding:1.25em;background:#f8f8f7;border-radius:4px}
+#content #toc>:first-child{margin-top:0}
+#content #toc>:last-child{margin-bottom:0}
+#footer{max-width:none;background:rgba(0,0,0,.8);padding:1.25em}
+#footer-text{color:hsla(0,0%,100%,.8);line-height:1.44}
+#content{margin-bottom:.625em}
+.sect1{padding-bottom:.625em}
+@media screen and (min-width:768px){#content{margin-bottom:1.25em}
+.sect1{padding-bottom:1.25em}}
+.sect1:last-child{padding-bottom:0}
+.sect1+.sect1{border-top:1px solid #e7e7e9}
+#content h1>a.anchor,h2>a.anchor,h3>a.anchor,#toctitle>a.anchor,.sidebarblock>.content>.title>a.anchor,h4>a.anchor,h5>a.anchor,h6>a.anchor{position:absolute;z-index:1001;width:1.5ex;margin-left:-1.5ex;display:block;text-decoration:none!important;visibility:hidden;text-align:center;font-weight:400}
+#content h1>a.anchor::before,h2>a.anchor::before,h3>a.anchor::before,#toctitle>a.anchor::before,.sidebarblock>.content>.title>a.anchor::before,h4>a.anchor::before,h5>a.anchor::before,h6>a.anchor::before{content:"\00A7";font-size:.85em;display:block;padding-top:.1em}
+#content h1:hover>a.anchor,#content h1>a.anchor:hover,h2:hover>a.anchor,h2>a.anchor:hover,h3:hover>a.anchor,#toctitle:hover>a.anchor,.sidebarblock>.content>.title:hover>a.anchor,h3>a.anchor:hover,#toctitle>a.anchor:hover,.sidebarblock>.content>.title>a.anchor:hover,h4:hover>a.anchor,h4>a.anchor:hover,h5:hover>a.anchor,h5>a.anchor:hover,h6:hover>a.anchor,h6>a.anchor:hover{visibility:visible}
+#content h1>a.link,h2>a.link,h3>a.link,#toctitle>a.link,.sidebarblock>.content>.title>a.link,h4>a.link,h5>a.link,h6>a.link{color:#ba3925;text-decoration:none}
+#content h1>a.link:hover,h2>a.link:hover,h3>a.link:hover,#toctitle>a.link:hover,.sidebarblock>.content>.title>a.link:hover,h4>a.link:hover,h5>a.link:hover,h6>a.link:hover{color:#a53221}
+details,.audioblock,.imageblock,.literalblock,.listingblock,.stemblock,.videoblock{margin-bottom:1.25em}
+details{margin-left:1.25rem}
+details>summary{cursor:pointer;display:block;position:relative;line-height:1.6;margin-bottom:.625rem;outline:none;-webkit-tap-highlight-color:transparent}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"";border:solid transparent;border-left:solid;border-width:.3em 0 .3em .5em;position:absolute;top:.5em;left:-1.25rem;transform:translateX(15%)}
+details[open]>summary::before{border:solid transparent;border-top:solid;border-width:.5em .3em 0;transform:translateY(15%)}
+details>summary::after{content:"";width:1.25rem;height:1em;position:absolute;top:.3em;left:-1.25rem}
+.admonitionblock td.content>.title,.audioblock>.title,.exampleblock>.title,.imageblock>.title,.listingblock>.title,.literalblock>.title,.stemblock>.title,.openblock>.title,.paragraph>.title,.quoteblock>.title,table.tableblock>.title,.verseblock>.title,.videoblock>.title,.dlist>.title,.olist>.title,.ulist>.title,.qlist>.title,.hdlist>.title{text-rendering:optimizeLegibility;text-align:left;font-family:"Noto Serif","DejaVu Serif",serif;font-size:1rem;font-style:italic}
+table.tableblock.fit-content>caption.title{white-space:nowrap;width:0}
+.paragraph.lead>p,#preamble>.sectionbody>[class=paragraph]:first-of-type p{font-size:1.21875em;line-height:1.6;color:rgba(0,0,0,.85)}
+.admonitionblock>table{border-collapse:separate;border:0;background:none;width:100%}
+.admonitionblock>table td.icon{text-align:center;width:80px}
+.admonitionblock>table td.icon img{max-width:none}
+.admonitionblock>table td.icon .title{font-weight:bold;font-family:"Open Sans","DejaVu Sans",sans-serif;text-transform:uppercase}
+.admonitionblock>table td.content{padding-left:1.125em;padding-right:1.25em;border-left:1px solid #dddddf;color:rgba(0,0,0,.6);word-wrap:anywhere}
+.admonitionblock>table td.content>:last-child>:last-child{margin-bottom:0}
+.exampleblock>.content{border:1px solid #e6e6e6;margin-bottom:1.25em;padding:1.25em;background:#fff;border-radius:4px}
+.sidebarblock{border:1px solid #dbdbd6;margin-bottom:1.25em;padding:1.25em;background:#f3f3f2;border-radius:4px}
+.sidebarblock>.content>.title{color:#7a2518;margin-top:0;text-align:center}
+.exampleblock>.content>:first-child,.sidebarblock>.content>:first-child{margin-top:0}
+.exampleblock>.content>:last-child,.exampleblock>.content>:last-child>:last-child,.exampleblock>.content .olist>ol>li:last-child>:last-child,.exampleblock>.content .ulist>ul>li:last-child>:last-child,.exampleblock>.content .qlist>ol>li:last-child>:last-child,.sidebarblock>.content>:last-child,.sidebarblock>.content>:last-child>:last-child,.sidebarblock>.content .olist>ol>li:last-child>:last-child,.sidebarblock>.content .ulist>ul>li:last-child>:last-child,.sidebarblock>.content .qlist>ol>li:last-child>:last-child{margin-bottom:0}
+.literalblock pre,.listingblock>.content>pre{border-radius:4px;overflow-x:auto;padding:1em;font-size:.8125em}
+@media screen and (min-width:768px){.literalblock pre,.listingblock>.content>pre{font-size:.90625em}}
+@media screen and (min-width:1280px){.literalblock pre,.listingblock>.content>pre{font-size:1em}}
+.literalblock pre,.listingblock>.content>pre:not(.highlight),.listingblock>.content>pre[class=highlight],.listingblock>.content>pre[class^="highlight "]{background:#f7f7f8}
+.literalblock.output pre{color:#f7f7f8;background:rgba(0,0,0,.9)}
+.listingblock>.content{position:relative}
+.listingblock code[data-lang]::before{display:none;content:attr(data-lang);position:absolute;font-size:.75em;top:.425rem;right:.5rem;line-height:1;text-transform:uppercase;color:inherit;opacity:.5}
+.listingblock:hover code[data-lang]::before{display:block}
+.listingblock.terminal pre .command::before{content:attr(data-prompt);padding-right:.5em;color:inherit;opacity:.5}
+.listingblock.terminal pre .command:not([data-prompt])::before{content:"$"}
+.listingblock pre.highlightjs{padding:0}
+.listingblock pre.highlightjs>code{padding:1em;border-radius:4px}
+.listingblock pre.prettyprint{border-width:0}
+.prettyprint{background:#f7f7f8}
+pre.prettyprint .linenums{line-height:1.45;margin-left:2em}
+pre.prettyprint li{background:none;list-style-type:inherit;padding-left:0}
+pre.prettyprint li code[data-lang]::before{opacity:1}
+pre.prettyprint li:not(:first-child) code[data-lang]::before{display:none}
+table.linenotable{border-collapse:separate;border:0;margin-bottom:0;background:none}
+table.linenotable td[class]{color:inherit;vertical-align:top;padding:0;line-height:inherit;white-space:normal}
+table.linenotable td.code{padding-left:.75em}
+table.linenotable td.linenos,pre.pygments .linenos{border-right:1px solid;opacity:.35;padding-right:.5em;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}
+pre.pygments span.linenos{display:inline-block;margin-right:.75em}
+.quoteblock{margin:0 1em 1.25em 1.5em;display:table}
+.quoteblock:not(.excerpt)>.title{margin-left:-1.5em;margin-bottom:.75em}
+.quoteblock blockquote,.quoteblock p{color:rgba(0,0,0,.85);font-size:1.15rem;line-height:1.75;word-spacing:.1em;letter-spacing:0;font-style:italic;text-align:justify}
+.quoteblock blockquote{margin:0;padding:0;border:0}
+.quoteblock blockquote::before{content:"\201c";float:left;font-size:2.75em;font-weight:bold;line-height:.6em;margin-left:-.6em;color:#7a2518;text-shadow:0 1px 2px rgba(0,0,0,.1)}
+.quoteblock blockquote>.paragraph:last-child p{margin-bottom:0}
+.quoteblock .attribution{margin-top:.75em;margin-right:.5ex;text-align:right}
+.verseblock{margin:0 1em 1.25em}
+.verseblock pre{font-family:"Open Sans","DejaVu Sans",sans-serif;font-size:1.15rem;color:rgba(0,0,0,.85);font-weight:300;text-rendering:optimizeLegibility}
+.verseblock pre strong{font-weight:400}
+.verseblock .attribution{margin-top:1.25rem;margin-left:.5ex}
+.quoteblock .attribution,.verseblock .attribution{font-size:.9375em;line-height:1.45;font-style:italic}
+.quoteblock .attribution br,.verseblock .attribution br{display:none}
+.quoteblock .attribution cite,.verseblock .attribution cite{display:block;letter-spacing:-.025em;color:rgba(0,0,0,.6)}
+.quoteblock.abstract blockquote::before,.quoteblock.excerpt blockquote::before,.quoteblock .quoteblock blockquote::before{display:none}
+.quoteblock.abstract blockquote,.quoteblock.abstract p,.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{line-height:1.6;word-spacing:0}
+.quoteblock.abstract{margin:0 1em 1.25em;display:block}
+.quoteblock.abstract>.title{margin:0 0 .375em;font-size:1.15em;text-align:center}
+.quoteblock.excerpt>blockquote,.quoteblock .quoteblock{padding:0 0 .25em 1em;border-left:.25em solid #dddddf}
+.quoteblock.excerpt,.quoteblock .quoteblock{margin-left:0}
+.quoteblock.excerpt blockquote,.quoteblock.excerpt p,.quoteblock .quoteblock blockquote,.quoteblock .quoteblock p{color:inherit;font-size:1.0625rem}
+.quoteblock.excerpt .attribution,.quoteblock .quoteblock .attribution{color:inherit;font-size:.85rem;text-align:left;margin-right:0}
+p.tableblock:last-child{margin-bottom:0}
+td.tableblock>.content{margin-bottom:1.25em;word-wrap:anywhere}
+td.tableblock>.content>:last-child{margin-bottom:-1.25em}
+table.tableblock,th.tableblock,td.tableblock{border:0 solid #dedede}
+table.grid-all>*>tr>*{border-width:1px}
+table.grid-cols>*>tr>*{border-width:0 1px}
+table.grid-rows>*>tr>*{border-width:1px 0}
+table.frame-all{border-width:1px}
+table.frame-ends{border-width:1px 0}
+table.frame-sides{border-width:0 1px}
+table.frame-none>colgroup+*>:first-child>*,table.frame-sides>colgroup+*>:first-child>*{border-top-width:0}
+table.frame-none>:last-child>:last-child>*,table.frame-sides>:last-child>:last-child>*{border-bottom-width:0}
+table.frame-none>*>tr>:first-child,table.frame-ends>*>tr>:first-child{border-left-width:0}
+table.frame-none>*>tr>:last-child,table.frame-ends>*>tr>:last-child{border-right-width:0}
+table.stripes-all>*>tr,table.stripes-odd>*>tr:nth-of-type(odd),table.stripes-even>*>tr:nth-of-type(even),table.stripes-hover>*>tr:hover{background:#f8f8f7}
+th.halign-left,td.halign-left{text-align:left}
+th.halign-right,td.halign-right{text-align:right}
+th.halign-center,td.halign-center{text-align:center}
+th.valign-top,td.valign-top{vertical-align:top}
+th.valign-bottom,td.valign-bottom{vertical-align:bottom}
+th.valign-middle,td.valign-middle{vertical-align:middle}
+table thead th,table tfoot th{font-weight:bold}
+tbody tr th{background:#f7f8f7}
+tbody tr th,tbody tr th p,tfoot tr th,tfoot tr th p{color:rgba(0,0,0,.8);font-weight:bold}
+p.tableblock>code:only-child{background:none;padding:0}
+p.tableblock{font-size:1em}
+ol{margin-left:1.75em}
+ul li ol{margin-left:1.5em}
+dl dd{margin-left:1.125em}
+dl dd:last-child,dl dd:last-child>:last-child{margin-bottom:0}
+li p,ul dd,ol dd,.olist .olist,.ulist .ulist,.ulist .olist,.olist .ulist{margin-bottom:.625em}
+ul.checklist,ul.none,ol.none,ul.no-bullet,ol.no-bullet,ol.unnumbered,ul.unstyled,ol.unstyled{list-style-type:none}
+ul.no-bullet,ol.no-bullet,ol.unnumbered{margin-left:.625em}
+ul.unstyled,ol.unstyled{margin-left:0}
+li>p:empty:only-child::before{content:"";display:inline-block}
+ul.checklist>li>p:first-child{margin-left:-1em}
+ul.checklist>li>p:first-child>.fa-square-o:first-child,ul.checklist>li>p:first-child>.fa-check-square-o:first-child{width:1.25em;font-size:.8em;position:relative;bottom:.125em}
+ul.checklist>li>p:first-child>input[type=checkbox]:first-child{margin-right:.25em}
+ul.inline{display:flex;flex-flow:row wrap;list-style:none;margin:0 0 .625em -1.25em}
+ul.inline>li{margin-left:1.25em}
+.unstyled dl dt{font-weight:400;font-style:normal}
+ol.arabic{list-style-type:decimal}
+ol.decimal{list-style-type:decimal-leading-zero}
+ol.loweralpha{list-style-type:lower-alpha}
+ol.upperalpha{list-style-type:upper-alpha}
+ol.lowerroman{list-style-type:lower-roman}
+ol.upperroman{list-style-type:upper-roman}
+ol.lowergreek{list-style-type:lower-greek}
+.hdlist>table,.colist>table{border:0;background:none}
+.hdlist>table>tbody>tr,.colist>table>tbody>tr{background:none}
+td.hdlist1,td.hdlist2{vertical-align:top;padding:0 .625em}
+td.hdlist1{font-weight:bold;padding-bottom:1.25em}
+td.hdlist2{word-wrap:anywhere}
+.literalblock+.colist,.listingblock+.colist{margin-top:-.5em}
+.colist td:not([class]):first-child{padding:.4em .75em 0;line-height:1;vertical-align:top}
+.colist td:not([class]):first-child img{max-width:none}
+.colist td:not([class]):last-child{padding:.25em 0}
+.thumb,.th{line-height:0;display:inline-block;border:4px solid #fff;box-shadow:0 0 0 1px #ddd}
+.imageblock.left{margin:.25em .625em 1.25em 0}
+.imageblock.right{margin:.25em 0 1.25em .625em}
+.imageblock>.title{margin-bottom:0}
+.imageblock.thumb,.imageblock.th{border-width:6px}
+.imageblock.thumb>.title,.imageblock.th>.title{padding:0 .125em}
+.image.left,.image.right{margin-top:.25em;margin-bottom:.25em;display:inline-block;line-height:0}
+.image.left{margin-right:.625em}
+.image.right{margin-left:.625em}
+a.image{text-decoration:none;display:inline-block}
+a.image object{pointer-events:none}
+sup.footnote,sup.footnoteref{font-size:.875em;position:static;vertical-align:super}
+sup.footnote a,sup.footnoteref a{text-decoration:none}
+sup.footnote a:active,sup.footnoteref a:active,#footnotes .footnote a:first-of-type:active{text-decoration:underline}
+#footnotes{padding-top:.75em;padding-bottom:.75em;margin-bottom:.625em}
+#footnotes hr{width:20%;min-width:6.25em;margin:-.25em 0 .75em;border-width:1px 0 0}
+#footnotes .footnote{padding:0 .375em 0 .225em;line-height:1.3334;font-size:.875em;margin-left:1.2em;margin-bottom:.2em}
+#footnotes .footnote a:first-of-type{font-weight:bold;text-decoration:none;margin-left:-1.05em}
+#footnotes .footnote:last-of-type{margin-bottom:0}
+#content #footnotes{margin-top:-.625em;margin-bottom:0;padding:.75em 0}
+div.unbreakable{page-break-inside:avoid}
+.big{font-size:larger}
+.small{font-size:smaller}
+.underline{text-decoration:underline}
+.overline{text-decoration:overline}
+.line-through{text-decoration:line-through}
+.aqua{color:#00bfbf}
+.aqua-background{background:#00fafa}
+.black{color:#000}
+.black-background{background:#000}
+.blue{color:#0000bf}
+.blue-background{background:#0000fa}
+.fuchsia{color:#bf00bf}
+.fuchsia-background{background:#fa00fa}
+.gray{color:#606060}
+.gray-background{background:#7d7d7d}
+.green{color:#006000}
+.green-background{background:#007d00}
+.lime{color:#00bf00}
+.lime-background{background:#00fa00}
+.maroon{color:#600000}
+.maroon-background{background:#7d0000}
+.navy{color:#000060}
+.navy-background{background:#00007d}
+.olive{color:#606000}
+.olive-background{background:#7d7d00}
+.purple{color:#600060}
+.purple-background{background:#7d007d}
+.red{color:#bf0000}
+.red-background{background:#fa0000}
+.silver{color:#909090}
+.silver-background{background:#bcbcbc}
+.teal{color:#006060}
+.teal-background{background:#007d7d}
+.white{color:#bfbfbf}
+.white-background{background:#fafafa}
+.yellow{color:#bfbf00}
+.yellow-background{background:#fafa00}
+span.icon>.fa{cursor:default}
+a span.icon>.fa{cursor:inherit}
+.admonitionblock td.icon [class^="fa icon-"]{font-size:2.5em;text-shadow:1px 1px 2px rgba(0,0,0,.5);cursor:default}
+.admonitionblock td.icon .icon-note::before{content:"\f05a";color:#19407c}
+.admonitionblock td.icon .icon-tip::before{content:"\f0eb";text-shadow:1px 1px 2px rgba(155,155,0,.8);color:#111}
+.admonitionblock td.icon .icon-warning::before{content:"\f071";color:#bf6900}
+.admonitionblock td.icon .icon-caution::before{content:"\f06d";color:#bf3400}
+.admonitionblock td.icon .icon-important::before{content:"\f06a";color:#bf0000}
+.conum[data-value]{display:inline-block;color:#fff!important;background:rgba(0,0,0,.8);border-radius:50%;text-align:center;font-size:.75em;width:1.67em;height:1.67em;line-height:1.67em;font-family:"Open Sans","DejaVu Sans",sans-serif;font-style:normal;font-weight:bold}
+.conum[data-value] *{color:#fff!important}
+.conum[data-value]+b{display:none}
+.conum[data-value]::after{content:attr(data-value)}
+pre .conum[data-value]{position:relative;top:-.125em}
+b.conum *{color:inherit!important}
+.conum:not([data-value]):empty{display:none}
+dt,th.tableblock,td.content,div.footnote{text-rendering:optimizeLegibility}
+h1,h2,p,td.content,span.alt,summary{letter-spacing:-.01em}
+p strong,td.content strong,div.footnote strong{letter-spacing:-.005em}
+p,blockquote,dt,td.content,td.hdlist1,span.alt,summary{font-size:1.0625rem}
+p{margin-bottom:1.25rem}
+.sidebarblock p,.sidebarblock dt,.sidebarblock td.content,p.tableblock{font-size:1em}
+.exampleblock>.content{background:#fffef7;border-color:#e0e0dc;box-shadow:0 1px 4px #e0e0dc}
+.print-only{display:none!important}
+@page{margin:1.25cm .75cm}
+@media print{*{box-shadow:none!important;text-shadow:none!important}
+html{font-size:80%}
+a{color:inherit!important;text-decoration:underline!important}
+a.bare,a[href^="#"],a[href^="mailto:"]{text-decoration:none!important}
+a[href^="http:"]:not(.bare)::after,a[href^="https:"]:not(.bare)::after{content:"(" attr(href) ")";display:inline-block;font-size:.875em;padding-left:.25em}
+abbr[title]{border-bottom:1px dotted}
+abbr[title]::after{content:" (" attr(title) ")"}
+pre,blockquote,tr,img,object,svg{page-break-inside:avoid}
+thead{display:table-header-group}
+svg{max-width:100%}
+p,blockquote,dt,td.content{font-size:1em;orphans:3;widows:3}
+h2,h3,#toctitle,.sidebarblock>.content>.title{page-break-after:avoid}
+#header,#content,#footnotes,#footer{max-width:none}
+#toc,.sidebarblock,.exampleblock>.content{background:none!important}
+#toc{border-bottom:1px solid #dddddf!important;padding-bottom:0!important}
+body.book #header{text-align:center}
+body.book #header>h1:first-child{border:0!important;margin:2.5em 0 1em}
+body.book #header .details{border:0!important;display:block;padding:0!important}
+body.book #header .details span:first-child{margin-left:0!important}
+body.book #header .details br{display:block}
+body.book #header .details br+span::before{content:none!important}
+body.book #toc{border:0!important;text-align:left!important;padding:0!important;margin:0!important}
+body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-break-before:always}
+.listingblock code[data-lang]::before{display:block}
+#footer{padding:0 .9375em}
+.hide-on-print{display:none!important}
+.print-only{display:block!important}
+.hide-for-print{display:none!important}
+.show-for-print{display:inherit!important}}
+@media amzn-kf8,print{#header>h1:first-child{margin-top:1.25rem}
+.sect1{padding:0!important}
+.sect1+.sect1{border:0}
+#footer{background:none}
+#footer-text{color:rgba(0,0,0,.6);font-size:.9em}}
+@media amzn-kf8{#header,#content,#footnotes,#footer{padding:0}}
+</style>
+</head>
+<body class="article">
+<div id="header">
+</div>
+<div id="content">
+<div class="sect1">
+<h2 id="_testing_erroneous_cases">Testing Erroneous Cases</h2>
+<div class="sectionbody">
+<div class="paragraph">
+<p>Most robust software invests heavily on error handling, and naturally test
+designers focus on corner cases and erroneous scenarios to maximize code
+coverage of the tests.</p>
+</div>
+<div class="paragraph">
+<p>The previous section introduces data sections provided by <code>Test::Nginx::Socket</code>
+for examining messages in the NGINX error log file, which is a powerful
+tool to check for errors in the tests. Sometimes we want to test more extreme
+cases like server startup failures, malformed responses, bad requests,
+and various kinds of timeout errors.</p>
+</div>
+<div class="sect2">
+<h3 id="_expected_server_startup_failures">Expected Server Startup Failures</h3>
+<div class="paragraph">
+<p>Sometimes the NGINX server is expected to fail to start, like using an
+NGINX configuration directive in the wrong way or some hard prerequisites
+are not met in early initialization. If we want to test such cases, especially
+the error log messages generated for such failures, we could use the <code>must_die</code>
+data section in our test block to signal the test scaffold that the NGINX
+server is <em>expected</em> to die upon startup in this very block.</p>
+</div>
+<div class="paragraph">
+<p>The following example tests the case of throwing a Lua exception in the
+context of <code>init_by_lua_block</code> of the <code>ngx_http_lua</code> module.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-test-base" data-lang="test-base">=== TEST 1: dying in init_by_lua_block
+--- http_config
+    init_by_lua_block {
+        error("I am dying!")
+    }
+--- config
+--- must_die
+--- error_log
+I am dying!</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The Lua code in <code>init_by_lua_block</code> runs in the NGINX master process during
+the NGINX configuration file loading process. Throwing out a Lua exception
+there aborts the NGINX startup process immediately. The occurrence of the
+<code>must_die</code> section tells the test scaffold to treat NGINX server startup
+failures as a test pass while a successful startup as a test failure. The
+<code>error_log</code> section there ensures that the server fails in the expected
+way, that is, due to the "I am dying!" exception.</p>
+</div>
+<div class="paragraph">
+<p>If we remove the <code>--- must_die</code> line from the test block above, then the
+test file won&#8217;t even run to completion:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>t/a.t .. nginx: [error] init_by_lua error: init_by_lua:2: I am dying!
+stack traceback:
+	[C]: in function 'error'
+	init_by_lua:2: in main chunk
+Bailout called.  Further testing stopped:  TEST 1: dying in init_by_lua_block
+- Cannot start nginx using command
+"nginx -p .../t/servroot/ -c .../t/servroot/conf/nginx.conf &gt; /dev/null".</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>By default the test scaffold treats NGINX server startup failures as fatal
+errors in running the tests. The <code>must_die</code> section, however, turns such
+a failure into a normal test checkup.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_expected_malformed_responses">Expected Malformed Responses</h3>
+<div class="paragraph">
+<p>HTTP responses should always be well-formed, but unfortunately the real
+world is complicated and there indeed exists cases where the responses
+can be malformed, like being truncated due to some unexpected causes.
+As a test designer, we always want to test such strange abnormal cases,
+among other things.</p>
+</div>
+<div class="paragraph">
+<p>Naturally, <code>Test::Nginx::Socket</code> treats malformed responses from the NGINX
+server as an error since it always does sanity checks on the responses
+it receives from the test server by default. But for test cases where we
+expect a malformed or truncated response sent from the server, we should
+explicitly tell the test scaffold to disable the response sanity check
+via the <code>ignore_response</code> data section.</p>
+</div>
+<div class="paragraph">
+<p>Consider the following example that closes the downstream connection immediately
+after sending out the first part of the response body.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-test-base" data-lang="test-base">=== TEST 1: aborting response body stream
+--- config
+    location = /t {
+        content_by_lua_block {
+            ngx.print("hello")
+            ngx.flush(true)
+            ngx.exit(444)
+        }
+    }
+--- request
+    GET /t
+--- ignore_response
+--- no_error_log
+[error]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>ngx.flush(true)</code> call in the <code>content_by_lua_block</code> handler is to
+ensure that any response body data buffered by NGINX is indeed flushed
+out to the system socket send buffers, which also usually means flushing
+the output data to the client side for local sockets. Also, the <code>ngx.exit(444)</code>
+call is used to immediately close the current downstream connection so
+it just interrupts the response body stream in the HTTP 1.1 chunked encoding.
+The important part is the <code>--- ignore_response</code> line which tells the test
+scaffold not to complain about the interrupted response data stream. If
+the test block above goes without this line, we will see the following
+test failure while running <code>prove</code>:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre># Failed test 'TEST 1: aborting response body stream - no last chunk found - 5
+# hello
+# '</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Obviously, the test scaffold complains about the lack of the "last chunk"
+used to indicate the end of the chunked encoded data stream. Because the
+server aborts the connection in the middle of response body data sending,
+there is no chance for the server to properly send well-formed response
+bodies in the chunked encoding.</p>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_testing_timeout_errors">Testing Timeout Errors</h3>
+<div class="paragraph">
+<p>Timeout errors are one of the most common network issues in the real world.
+Timeout might happen due to many reasons, like packet dropping on the wire
+or on the other end, connectivity problems, and other expensive operations
+blocking the event loop. Most of applications want to ensure
+they have a timeout protection that prevents them from waiting for too
+long.</p>
+</div>
+<div class="paragraph">
+<p>Testing and emulating timeout errors are often tricky in a self-contained
+unit test framework since most of the network traffic initiated by the
+test
+cases are local only, that is, going through the local "loopback" device
+that has perfect latency and throughput. We will examine some of the tricks
+that can be used to reliably emulate various different kinds of timeout
+errors in the test suite.</p>
+</div>
+<div class="sect3">
+<h4 id="_connecting_timeouts">Connecting Timeouts</h4>
+<div class="paragraph">
+<p>Connecting timeouts in the context of the TCP protocol are easiest to emulate.
+Just point the connecting target to a remote address that always drops
+any incoming (<code>SYN</code>) packets via a firewall rule or something similar.
+We provide such a "black-hole service" at the port 12345 of the <code>agentzh.org</code>
+host. You can make use of it if your test running environment allows public
+network access. Consider the following test case.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-test-base" data-lang="test-base">=== TEST 1: connect timeout
+--- config
+    resolver 8.8.8.8;
+    resolver_timeout 1s;
+
+    location = /t {
+        content_by_lua_block {
+            local sock = ngx.socket.tcp()
+            sock:settimeout(100) -- ms
+            local ok, err = sock:connect("agentzh.org", 12345)
+            if not ok then
+                ngx.log(ngx.ERR, "failed to connect: ", err)
+                return ngx.exit(500)
+            end
+            ngx.say("ok")
+        }
+    }
+--- request
+GET /t
+--- response_body_like: 500 Internal Server Error
+--- error_code: 500
+--- error_log
+failed to connect: timeout</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>We have to configure the <code>resolver</code> directive here because we need to resolve
+the domain name <code>agentzh.org</code> at request time (in Lua). We check the NGINX
+error log via the <code>error_log</code> section for the error string returned by
+the cosocket object&#8217;s <code>connect()</code> method.</p>
+</div>
+<div class="paragraph">
+<p>It is important to use a relatively small timeout threshold in the test
+cases so that we do not have to wait for too long to complete the test
+run. Tests are meant to be run very often. The more frequently we run the
+tests, the more value we may gain from automating the tests.</p>
+</div>
+<div class="paragraph">
+<p>It is worth mentioning that the test scaffold&#8217;s HTTP client does have a
+timeout threshold as well, which is 3 seconds by default. If your test
+request takes more than 3 seconds, you get an error message in the test
+report:</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>ERROR: client socket timed out - TEST 1: connect timeout</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>This message is what we would get if we commented out the <code>settimeout</code>
+call and relies on the default 60 second timeout threshold in cosockets.</p>
+</div>
+<div class="paragraph">
+<p>We could change this default timeout threshold used by the test scaffold
+client by setting a value to the <code>timeout</code> data section, as in</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-test-base" data-lang="test-base">--- timeout: 10</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Now we have 10 seconds of timeout protection instead of 3.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_reading_timeouts">Reading Timeouts</h4>
+<div class="paragraph">
+<p>Emulating reading timeouts is also easy. Just try reading from a wire where
+the other end never writes anything but still keeps the connection alive.
+Consider the following example:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-test-base" data-lang="test-base">=== TEST 1: read timeout
+--- main_config
+    stream {
+        server {
+            listen 5678;
+            content_by_lua_block {
+                ngx.sleep(10)  -- 10 sec
+            }
+        }
+    }
+--- config
+    lua_socket_log_errors off;
+    location = /t {
+        content_by_lua_block {
+            local sock = ngx.socket.tcp()
+            sock:settimeout(100) -- ms
+            assert(sock:connect("127.0.0.1", 5678))
+            ngx.say("connected.")
+            local data, err = sock:receive()  -- try to read a line
+            if not data then
+                ngx.say("failed to receive: ", err)
+            else
+                ngx.say("received: ", data)
+            end
+        }
+    }
+--- request
+GET /t
+--- response_body
+connected.
+failed to receive: timeout
+--- no_error_log
+[error]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Here we use the <code>main_config</code> data section to define a TCP server of our
+own, listening at the port of 5678 on the local host. This is a mocked-up
+server
+that can establish new TCP connections but never write out anything and
+just sleep for 10 second before closing the session. Note that we are using
+the <a href="https://github.com/openresty/stream-lua-nginx-module#readme">ngx_stream_lua</a>
+module in the <code>stream {}</code> configuration block. In our <code>location = /t</code>,
+which is the main target of this test case, connects to our mock server
+and tries to read a line from the wire. Apparently the 100ms timeout threshold
+on the client side is reached first and we can successfully exercise the
+error handling code for the reading timeout error.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_sending_timeouts">Sending Timeouts</h4>
+<div class="paragraph">
+<p>Triggering sending timeouts is much harder than connecting and reading
+timeouts. This is due to the asynchronous nature of writing.</p>
+</div>
+<div class="paragraph">
+<p>For performance reasons, there exists at least two layers of buffers for
+writes:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>the userland send buffers inside the NGINX core, and</p>
+</li>
+<li>
+<p>the socket send buffers in the operating system kernel&#8217;s TCP/IP stack
+implementation</p>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>To make the situation even worse, there also at least exists a system-level
+receive buffer layer on the other end of the connection.</p>
+</div>
+<div class="paragraph">
+<p>To make a send timeout error happen, the most naive way is to fill out
+all these buffers along the data sending chain while ensuring that the
+other end never actually reads anything on the application level. Thus,
+buffering makes a sending timeout particularly hard to reproduce and emulate
+in a typical testing and development environment with a small amount of
+(test) payload.</p>
+</div>
+<div class="paragraph">
+<p>Fortunately there is a userland trick that can intercept the libc wrappers
+for the actual system calls for socket I/O and do funny things that could
+otherwise be very difficult to achieve. Our <a href="https://github.com/openresty/mockeagain">mockeagain</a>
+library implements such a trick and supports emulating timeout errors at
+user-specified precise positions in the output data stream.</p>
+</div>
+<div class="paragraph">
+<p>The following example triggers a sending timeout right after sending out
+the "hello, world" string as the response body.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-test-base" data-lang="test-base">=== TEST 1: send timeout
+--- config
+    send_timeout 100ms;
+    postpone_output 1;
+
+    location = /t {
+        content_by_lua_block {
+            ngx.say("hi bob!")
+            local ok, err = ngx.flush(true)
+            if not ok then
+                ngx.log(ngx.ERR, "flush #1 failed: ", err)
+                return
+            end
+
+            ngx.say("hello, world!")
+            local ok, err = ngx.flush(true)
+            if not ok then
+                ngx.log(ngx.ERR, "flush #2 failed: ", err)
+                return
+            end
+        }
+    }
+--- request
+GET /t
+--- ignore_response
+--- error_log
+flush #2 failed: timeout
+--- no_error_log
+flush #1 failed</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Note the <code>send_timeout</code> directive that is used to configure the sending
+timeout for NGINX downstream writing operations. Here we use a small threshold,
+<code>100ms</code>, to ensure our test case runs fast and never hits the default 3
+seconds timeout threshold of the test scaffold client. The <code>postpone_output
+1</code> directive effectively turns off the "postpone output buffer" of NGINX,
+which may hold our output data before even reaching the libc system call
+wrappers. Finally, the <code>ngx.flush()</code> call in Lua ensures that <em>no</em> buffers
+along the NGINX output filter chain holds our data without sending downward.</p>
+</div>
+<div class="paragraph">
+<p>Before running this test case, we have to set the following system environment
+variables (in the bash syntax):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-bash" data-lang="bash">export LD_PRELOAD="mockeagain.so"
+export MOCKEAGAIN="w"
+export MOCKEAGAIN_WRITE_TIMEOUT_PATTERN='hello, world'
+export TEST_NGINX_EVENT_TYPE='poll'</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Let&#8217;s go through them one by one:</p>
+</div>
+<div class="olist arabic">
+<ol class="arabic">
+<li>
+<p>The <code>LD_PRELOAD="mockeagain.so"</code> assignment pre-loads the <code>mockeagain</code>
+library into the running processes, including the NGINX server process
+started by the test scaffold, of course. You may also need to set the <code>LD_LIBRARY_PATH</code>
+environment to include the directory path of the <code>mockeagain.so</code> file if
+the file is not in the default system library search paths.</p>
+</li>
+<li>
+<p>The <code>MOCKEAGAIN="w"</code> assignment enables the <code>mockeagain</code> library to intercept
+and do funny things about the writing operations on nonblocking sockets.</p>
+</li>
+<li>
+<p>The <code>MOCKEAGAIN_WRITE_TIMEOUT_PATTERN='hello, world'</code> assignment makes
+<code>mockeagain</code> refuse to send more data after seeing the specified string
+pattern, <code>hello, world</code>, in the output data stream.</p>
+</li>
+<li>
+<p>The <code>TEST_NGINX_EVENT_TYPE='poll'</code> setting makes NGINX server uses the
+<code>poll</code> event API instead of the system default (being <code>epoll</code> on Linux,
+for example). This is because <code>mockeagain</code> only supports <code>poll</code> events
+for now. Behind the scene, this environment just makes the test scaffold
+generate the following <code>nginx.conf</code> snippet.</p>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-nginx" data-lang="nginx">events {
+    use poll;
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>You need to ensure, however, that your NGINX or OpenResty build has the
+<code>poll</code> support compiled in. Basically, the build should have the <code>./configure</code>
+option <code>--with-poll_module</code>.</p>
+</div>
+<div class="paragraph">
+<p>We have plans to add epoll edge-triggering support to <code>mockeagain</code> in the
+future. Hopefully by that time we do not have to use <code>poll</code> at least on
+Linux.</p>
+</div>
+</li>
+</ol>
+</div>
+<div class="paragraph">
+<p>Now you should get the test block above passed!</p>
+</div>
+<div class="paragraph">
+<p>Ideally, we could set these environments directly inside the test file
+because this test case will never pass without these environments anyway.
+We could add the following Perl code snippet to the very beginning of the
+test file prologue (yes, even before the <code>use</code> statement):</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-Perl" data-lang="Perl">BEGIN {
+    $ENV{LD_PRELOAD} = "mockeagain.so";
+    $ENV{MOCKEAGAIN} = "w";
+    $ENV{MOCKEAGAIN_WRITE_TIMEOUT_PATTERN} = 'hello, world';
+    $ENV{TEST_NGINX_EVENT_TYPE} = 'poll';
+}</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>The <code>BEGIN {}</code> block is required here because it runs before Perl loads
+any modules, especially <code>Test::Nginx::Socket</code>, in which we want these environments
+to take effect.</p>
+</div>
+<div class="paragraph">
+<p>It is a bad idea, however, to hard-code the path of the <code>mockeagain.so</code>
+file in the test file itself since different test runners might put <code>mockeagain</code>
+in different places in the file system. Better let the test runner configure
+the <code>LD_LIBRARY_PATH</code> environment containing the actual library path from
+outside.</p>
+</div>
+<div class="sect4">
+<h5 id="_mockeagain_troubleshooting">Mockeagain Troubleshooting</h5>
+<div class="paragraph">
+<p>If you are seeing the following error while running the test case above,</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>ERROR: ld.so: object 'mockeagain.so' from LD_PRELOAD cannot be preloaded (cannot open shared object file): ignored.</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>then you should check whether you have added the directory path of your
+<code>mockeagain.so</code> library to the <code>LD_LIBRARY_PATH</code> environment. On my system,
+for example, I have</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>export LD_LIBRARY_PATH=$HOME/git/mockeagain:$LD_LIBRARY_PATH</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>If you are seeing an error similar to the following,</p>
+</div>
+<div class="literalblock">
+<div class="content">
+<pre>nginx: [emerg] invalid event type "poll" in .../t/servroot/conf/nginx.conf:76</pre>
+</div>
+</div>
+<div class="paragraph">
+<p>then your NGINX or OpenResty build does not have the poll module compiled
+in. And you should rebuild your NGINX or OpenResty by passing the <code>--with-poll_module</code>
+option to the <code>./configure</code> command line.</p>
+</div>
+<div class="paragraph">
+<p>We will revisit the <code>mockeagain</code> library in the <code>Test Modes</code> section soon.</p>
+</div>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_mocking_bad_backend_responses">Mocking Bad Backend Responses</h3>
+<div class="paragraph">
+<p>Earlier in this section we have already seen examples that uses the
+<a href="https://github.com/openresty/stream-lua-nginx-module#readme">ngx_stream_lua</a>
+module to mock a backend TCP server that accepts new incoming connections
+but never writes anything back. We could of course do fancier things in
+such a mocked server like emulating a buggy or malicious backend server
+that returns bad response data.</p>
+</div>
+<div class="paragraph">
+<p>For example, while testing a Memcached client, it would be pretty hard
+to emulate erroneous error responses or ill-formed responses with a real
+Memcached server. Now it is trivial with mocking:</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-test-base" data-lang="test-base">=== TEST 1: get() results in an error response
+--- main_config
+    stream {
+        server {
+            listen 1921;
+            content_by_lua_block {
+                ngx.print("SERVER_ERROR\r\n")
+            }
+        }
+    }
+--- config
+    location /t {
+        content_by_lua_block {
+            local memcached = require "resty.memcached"
+            local memc = memcached:new()
+
+            assert(memc:connect("127.0.0.1", 1921))
+
+            local res, flags, err = memc:get("dog")
+            if not res then
+                ngx.say("failed to get: ", err)
+                return
+            end
+
+            ngx.say("get: ", res)
+            memc:close()
+        }
+    }
+--- request
+GET /t
+--- response_body
+failed to get: SERVER_ERROR
+--- no_error_log
+[error]</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Our mocked-up Memcached server can behave in any way that we like. Hooray!</p>
+</div>
+<div class="admonitionblock note">
+<table>
+<tr>
+<td class="icon">
+<div class="title">Note</div>
+</td>
+<td class="content">
+<code>Test::Nginx::Socket</code> provides the data sections <code>tcp_listen</code>, <code>tcp_query</code>,
+<code>tcp_reply</code>, and etc to enable the builtin mocked TCP server of the test
+scaffold. You can use this facility when you do not want to depend on the
+<code>ngx_stream_lua</code> module or the NGINX stream subsystem for your test suite.
+Indeed, we were solely relying on the builtin TCP server of <code>Test::Nginx::Socket</code>
+before the <code>ngx_stream_lua</code> module was born. Similarly, <code>Test::Nginx::Socket</code>
+offers a builtin UDP server via the data sections <code>udp_listen</code>, <code>udp_query</code>,
+<code>udp_reply</code>, and etc. You can refer to the <a href="https://metacpan.org/pod/Test::Nginx::Socket">official
+documentation</a> of <code>Test::Nginx::Socket</code> for more details.
+</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_emulating_bad_clients">Emulating Bad Clients</h3>
+<div class="paragraph">
+<p>The <code>Test::Nginx::Socket</code> test framework provides special data sections
+to help emulating ill-behaved HTTP clients.</p>
+</div>
+<div class="sect3">
+<h4 id="_crafting_bad_requests">Crafting Bad Requests</h4>
+<div class="paragraph">
+<p>The <code>raw_request</code> data section can be used to specify whatever data for
+the test request. It is often used with the <code>eval</code> section filter so that
+we can easily encode special characters like <code>\r</code>. Let&#8217;s look at the following
+example.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-test-nginx" data-lang="test-nginx">=== TEST 1: missing the Host request header
+--- config
+    location = /t {
+        return 200;
+    }
+--- raw_request eval
+"GET /t HTTP/1.1\r
+Connection: close\r
+\r
+"
+--- response_body_like: 400 Bad Request
+--- error_code: 400</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>So we easily construct a malformed request that does not have a <code>Host</code>
+header, which results in a 400 response from the NGINX server, as expected.</p>
+</div>
+<div class="paragraph">
+<p>The <code>request</code> data section we have been using so far, on the other hand,
+always ensures that a well-formed HTTP request is sent to the test server.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_emulating_client_aborts">Emulating Client Aborts</h4>
+<div class="paragraph">
+<p>Client aborts are a very intriguing phenomenon in the web world. Sometimes
+we want the server to continue processing even after the client aborts
+the connection; on other occasions we just want to abort the whole request
+handler immediately in such cases. Either way, we need robust way to emulate
+client aborts in our unit test cases.</p>
+</div>
+<div class="paragraph">
+<p>We have already discussed the <code>timeout</code> data section that can be used to
+adjust the default timeout protection threshold used by the test scaffold
+client. We could also use it to abort the connection prematurely. A small
+timeout threshold is often desired for this purpose. To suppress the test
+scaffold from printing out an error on client timeout, we can specify the
+<code>abort</code> data section to signal the test scaffold. Let&#8217;s put these together
+in a simple test case.</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code class="language-test-nginx" data-lang="test-nginx">=== TEST 1: abort processing in the Lua callback on client aborts
+--- config
+    location = /t {
+        lua_check_client_abort on;
+
+        content_by_lua_block {
+            local ok, err = ngx.on_abort(function ()
+                ngx.log(ngx.NOTICE, "on abort handler called!")
+                ngx.exit(444)
+            end)
+
+            if not ok then
+                error("cannot set on_abort: " .. err)
+            end
+
+            ngx.sleep(0.7)  -- sec
+            ngx.log(ngx.NOTICE, "main handler done")
+        }
+    }
+--- request
+    GET /t
+--- timeout: 0.2
+--- abort
+--- ignore_response
+--- no_error_log
+[error]
+main handler done
+--- error_log
+client prematurely closed connection
+on abort handler called!</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>In this example, we make the test scaffold client abort the connection
+after 0.2 seconds via the <code>timeout</code> section. Also we prevent the test scaffold
+from printing out the client timeout error by specifying the <code>abort</code> section.
+Finally, in the Lua application code, we checks for client abort events
+by turning on the <code>lua_check_client_abort</code> directive and aborts the server
+processing by calling <code>ngx.exit(444)</code> in our Lua callback function registered
+by the <code>ngx.on_abort</code> API.</p>
+</div>
+</div>
+<div class="sect3">
+<h4 id="_clients_never_closing_connections">Clients Never Closing Connections</h4>
+<div class="paragraph">
+<p>Unlike most well-formed HTTP clients in the market, the HTTP client used
+by <code>Test::Nginx::Socket</code> <em>never</em> actively closes the connection unless a
+timeout error happens (exceeding the timeout threshold as specified by
+the <code>--- timeout</code> section). This can ensure the NGINX server always actually
+closes the connection when the request specifies the "Connection: close"
+request header.</p>
+</div>
+<div class="paragraph">
+<p>When the server does not close the connection, there is a "connection leak"
+bug on the server side. For example, NGINX uses reference counting (in
+<code>r&#8594;main&#8594;count</code>) in its HTTP subsystem to determine whether a request
+can be closed and freed. When there is an error in this reference counting,
+NGINX may never close the request, leading to resource leaks. In such cases,
+the corresponding test cases always fail with a client-side timeout error,
+for instance,</p>
+</div>
+<div class="listingblock">
+<div class="content">
+<pre class="highlight"><code># Failed test 'ERROR: client socket timed out - TEST 1: foo
+# '</code></pre>
+</div>
+</div>
+<div class="paragraph">
+<p>Obviously <code>Test::Nginx::Socket</code> is a malicious HTTP client by default in
+this aspect. This is also why our test scaffold avoids using a well-formed
+HTTP client library itself. Most test suite is focusing on extreme and
+erroneous cases anyway and well-formed HTTP clients help hiding problems
+instead of exposing them.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<div id="footer-text">
+Last updated 2025-06-07 10:53:47 +0800
+</div>
+</div>
+</body>
+</html>

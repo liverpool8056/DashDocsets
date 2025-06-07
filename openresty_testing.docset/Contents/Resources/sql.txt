@@ -1,0 +1,7 @@
+INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('Test::Nginx', 'Guide', 'test-nginx.html')
+INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('Test Suite Layout, 'Guide', 'test-suite-layout.html')
+INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('Test File Layout', 'Guide', 'test-file-layout.html')
+INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('Running Tests', 'Guide', 'running-tests.html')
+INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('Preparing Tests', 'Guide', 'preparing-tests.html')
+INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('Testing Erroneous Cases', 'Guide', 'testing-erroneous-cases.html')
+INSERT OR IGNORE INTO searchIndex(name, type, path) VALUES ('Test Modes', 'Guide', 'test-modes.html')

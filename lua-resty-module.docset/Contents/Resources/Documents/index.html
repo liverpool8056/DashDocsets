@@ -1,0 +1,1469 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="" xml:lang="">
+<head>
+  <meta charset="utf-8" />
+  <meta name="generator" content="pandoc" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes" />
+  <title>lua-resty-module</title>
+  <style>
+    html {
+      color: #1a1a1a;
+      background-color: #fdfdfd;
+    }
+    body {
+      margin: 0 auto;
+      max-width: 36em;
+      padding-left: 50px;
+      padding-right: 50px;
+      padding-top: 50px;
+      padding-bottom: 50px;
+      hyphens: auto;
+      overflow-wrap: break-word;
+      text-rendering: optimizeLegibility;
+      font-kerning: normal;
+    }
+    @media (max-width: 600px) {
+      body {
+        font-size: 0.9em;
+        padding: 12px;
+      }
+      h1 {
+        font-size: 1.8em;
+      }
+    }
+    @media print {
+      html {
+        background-color: white;
+      }
+      body {
+        background-color: transparent;
+        color: black;
+        font-size: 12pt;
+      }
+      p, h2, h3 {
+        orphans: 3;
+        widows: 3;
+      }
+      h2, h3, h4 {
+        page-break-after: avoid;
+      }
+    }
+    p {
+      margin: 1em 0;
+    }
+    a {
+      color: #1a1a1a;
+    }
+    a:visited {
+      color: #1a1a1a;
+    }
+    img {
+      max-width: 100%;
+    }
+    svg {
+      height: auto;
+      max-width: 100%;
+    }
+    h1, h2, h3, h4, h5, h6 {
+      margin-top: 1.4em;
+    }
+    h5, h6 {
+      font-size: 1em;
+      font-style: italic;
+    }
+    h6 {
+      font-weight: normal;
+    }
+    ol, ul {
+      padding-left: 1.7em;
+      margin-top: 1em;
+    }
+    li > ol, li > ul {
+      margin-top: 0;
+    }
+    blockquote {
+      margin: 1em 0 1em 1.7em;
+      padding-left: 1em;
+      border-left: 2px solid #e6e6e6;
+      color: #606060;
+    }
+    code {
+      font-family: Menlo, Monaco, Consolas, 'Lucida Console', monospace;
+      font-size: 85%;
+      margin: 0;
+      hyphens: manual;
+    }
+    pre {
+      margin: 1em 0;
+      overflow: auto;
+    }
+    pre code {
+      padding: 0;
+      overflow: visible;
+      overflow-wrap: normal;
+    }
+    .sourceCode {
+     background-color: transparent;
+     overflow: visible;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #1a1a1a;
+      height: 1px;
+      margin: 1em 0;
+    }
+    table {
+      margin: 1em 0;
+      border-collapse: collapse;
+      width: 100%;
+      overflow-x: auto;
+      display: block;
+      font-variant-numeric: lining-nums tabular-nums;
+    }
+    table caption {
+      margin-bottom: 0.75em;
+    }
+    tbody {
+      margin-top: 0.5em;
+      border-top: 1px solid #1a1a1a;
+      border-bottom: 1px solid #1a1a1a;
+    }
+    th {
+      border-top: 1px solid #1a1a1a;
+      padding: 0.25em 0.5em 0.25em 0.5em;
+    }
+    td {
+      padding: 0.125em 0.5em 0.25em 0.5em;
+    }
+    header {
+      margin-bottom: 4em;
+      text-align: center;
+    }
+    #TOC li {
+      list-style: none;
+    }
+    #TOC ul {
+      padding-left: 1.3em;
+    }
+    #TOC > ul {
+      padding-left: 0;
+    }
+    #TOC a:not(:hover) {
+      text-decoration: none;
+    }
+    code{white-space: pre-wrap;}
+    span.smallcaps{font-variant: small-caps;}
+    div.columns{display: flex; gap: min(4vw, 1.5em);}
+    div.column{flex: auto; overflow-x: auto;}
+    div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+    /* The extra [class] is a hack that increases specificity enough to
+       override a similar rule in reveal.js */
+    ul.task-list[class]{list-style: none;}
+    ul.task-list li input[type="checkbox"] {
+      font-size: inherit;
+      width: 0.8em;
+      margin: 0 0.8em 0.2em -1.6em;
+      vertical-align: middle;
+    }
+    .display.math{display: block; text-align: center; margin: 0.5rem auto;}
+    /* CSS for syntax highlighting */
+    html { -webkit-text-size-adjust: 100%; }
+    pre > code.sourceCode { white-space: pre; position: relative; }
+    pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+    pre > code.sourceCode > span:empty { height: 1.2em; }
+    .sourceCode { overflow: visible; }
+    code.sourceCode > span { color: inherit; text-decoration: inherit; }
+    div.sourceCode { margin: 1em 0; }
+    pre.sourceCode { margin: 0; }
+    @media screen {
+    div.sourceCode { overflow: auto; }
+    }
+    @media print {
+    pre > code.sourceCode { white-space: pre-wrap; }
+    pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+    }
+    pre.numberSource code
+      { counter-reset: source-line 0; }
+    pre.numberSource code > span
+      { position: relative; left: -4em; counter-increment: source-line; }
+    pre.numberSource code > span > a:first-child::before
+      { content: counter(source-line);
+        position: relative; left: -1em; text-align: right; vertical-align: baseline;
+        border: none; display: inline-block;
+        -webkit-touch-callout: none; -webkit-user-select: none;
+        -khtml-user-select: none; -moz-user-select: none;
+        -ms-user-select: none; user-select: none;
+        padding: 0 4px; width: 4em;
+        color: #aaaaaa;
+      }
+    pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+    div.sourceCode
+      {   }
+    @media screen {
+    pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+    }
+    code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+    code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+    code span.at { color: #7d9029; } /* Attribute */
+    code span.bn { color: #40a070; } /* BaseN */
+    code span.bu { color: #008000; } /* BuiltIn */
+    code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+    code span.ch { color: #4070a0; } /* Char */
+    code span.cn { color: #880000; } /* Constant */
+    code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+    code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+    code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+    code span.dt { color: #902000; } /* DataType */
+    code span.dv { color: #40a070; } /* DecVal */
+    code span.er { color: #ff0000; font-weight: bold; } /* Error */
+    code span.ex { } /* Extension */
+    code span.fl { color: #40a070; } /* Float */
+    code span.fu { color: #06287e; } /* Function */
+    code span.im { color: #008000; font-weight: bold; } /* Import */
+    code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+    code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+    code span.op { color: #666666; } /* Operator */
+    code span.ot { color: #007020; } /* Other */
+    code span.pp { color: #bc7a00; } /* Preprocessor */
+    code span.sc { color: #4070a0; } /* SpecialChar */
+    code span.ss { color: #bb6688; } /* SpecialString */
+    code span.st { color: #4070a0; } /* String */
+    code span.va { color: #19177c; } /* Variable */
+    code span.vs { color: #4070a0; } /* VerbatimString */
+    code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+  </style>
+</head>
+<body>
+<h1 id="name">Name</h1>
+<p>ngx_http_lua_module - Embed the power of Lua into Nginx HTTP
+Servers.</p>
+<p>This module is a core component of <a
+href="https://openresty.org">OpenResty</a>. If you are using this
+module, then you are essentially using OpenResty :)</p>
+<p><em>This module is not distributed with the Nginx source.</em> See <a
+href="#installation">the installation instructions</a>.</p>
+<h1 id="table-of-contents">Table of Contents</h1>
+<ul>
+<li><a href="#name">Name</a></li>
+<li><a href="#status">Status</a></li>
+<li><a href="#version">Version</a></li>
+<li><a href="#videos">Videos</a></li>
+<li><a href="#synopsis">Synopsis</a></li>
+<li><a href="#description">Description</a></li>
+<li><a href="#typical-uses">Typical Uses</a></li>
+<li><a href="#nginx-compatibility">Nginx Compatibility</a></li>
+<li><a href="#installation">Installation</a>
+<ul>
+<li><a href="#building-as-a-dynamic-module">Building as a dynamic
+module</a></li>
+<li><a href="#c-macro-configurations">C Macro Configurations</a></li>
+</ul></li>
+<li><a href="#community">Community</a>
+<ul>
+<li><a href="#english-mailing-list">English Mailing List</a></li>
+<li><a href="#chinese-mailing-list">Chinese Mailing List</a></li>
+</ul></li>
+<li><a href="#code-repository">Code Repository</a></li>
+<li><a href="#bugs-and-patches">Bugs and Patches</a></li>
+<li><a href="#luajit-bytecode-support">LuaJIT bytecode support</a></li>
+<li><a href="#system-environment-variable-support">System Environment
+Variable Support</a></li>
+<li><a href="#http-10-support">HTTP 1.0 support</a></li>
+<li><a href="#statically-linking-pure-lua-modules">Statically Linking
+Pure Lua Modules</a></li>
+<li><a href="#data-sharing-within-an-nginx-worker">Data Sharing within
+an Nginx Worker</a></li>
+<li><a href="#known-issues">Known Issues</a>
+<ul>
+<li><a href="#tcp-socket-connect-operation-issues">TCP socket connect
+operation issues</a></li>
+<li><a href="#lua-coroutine-yieldingresuming">Lua Coroutine
+Yielding/Resuming</a></li>
+<li><a href="#lua-variable-scope">Lua Variable Scope</a></li>
+<li><a
+href="#locations-configured-by-subrequest-directives-of-other-modules">Locations
+Configured by Subrequest Directives of Other Modules</a></li>
+<li><a href="#cosockets-not-available-everywhere">Cosockets Not
+Available Everywhere</a></li>
+<li><a href="#special-escaping-sequences">Special Escaping
+Sequences</a></li>
+<li><a href="#mixing-with-ssi-not-supported">Mixing with SSI Not
+Supported</a></li>
+<li><a href="#spdy-mode-not-fully-supported">SPDY Mode Not Fully
+Supported</a></li>
+<li><a href="#missing-data-on-short-circuited-requests">Missing data on
+short circuited requests</a></li>
+</ul></li>
+<li><a href="#todo">TODO</a></li>
+<li><a href="#changes">Changes</a></li>
+<li><a href="#test-suite">Test Suite</a></li>
+<li><a href="#copyright-and-license">Copyright and License</a></li>
+<li><a href="#see-also">See Also</a></li>
+<li><a href="directives.html">Directives</a></li>
+<li><a href="nginx_api_for_lua.html">Nginx API for Lua</a></li>
+<li><a href="#obsolete-sections">Obsolete Sections</a>
+<ul>
+<li><a href="#special-pcre-sequences">Special PCRE Sequences</a></li>
+<li><a href="#lualuajit-bytecode-support">Lua/LuaJIT bytecode
+support</a></li>
+</ul></li>
+</ul>
+<h1 id="status">Status</h1>
+<p>Production ready.</p>
+<h1 id="version">Version</h1>
+<p>This document describes ngx_lua <a
+href="https://github.com/openresty/lua-nginx-module/tags">v0.10.25</a>,
+which was released on 19 June 2023.</p>
+<h1 id="videos">Videos</h1>
+<ul>
+<li><p>YouTube video “<a href="https://youtu.be/eSfYLvVQMxw">Hello World
+HTTP Example with OpenResty/Lua</a>”</p>
+<p><a href="https://youtu.be/eSfYLvVQMxw"><img
+src="https://img.youtube.com/vi/eSfYLvVQMxw/0.jpg"
+alt="Hello World HTTP Example with OpenResty/Lua" /></a></p></li>
+<li><p>YouTube video “<a href="https://youtu.be/vfYxOMl5LVY">Write Your
+Own Lua Modules in OpenResty/Nginx Applications</a>”</p>
+<p><a href="https://youtu.be/vfYxOMl5LVY"><img
+src="https://img.youtube.com/vi/vfYxOMl5LVY/0.jpg"
+alt="Write Your Own Lua Modules in OpenResty/Nginx Applications" /></a></p></li>
+<li><p>YouTube video “<a href="https://youtu.be/L1c7aw4mSOo">OpenResty’s
+resty Command-Line Utility Demo</a>”</p>
+<p><a href="https://youtu.be/L1c7aw4mSOo"><img
+src="https://img.youtube.com/vi/L1c7aw4mSOo/0.jpg"
+alt="OpenResty’s resty Command-Line Utility Demo" /></a></p></li>
+<li><p>YouTube video “<a href="https://youtu.be/VkRYW_qLoME">Measure
+Execution Time of Lua Code Correctly in OpenResty</a>”</p>
+<p><a href="https://youtu.be/VkRYW_qLoME"><img
+src="https://img.youtube.com/vi/VkRYW_qLoME/0.jpg"
+alt="Measure Execution Time of Lua Code Correctly in OpenResty" /></a></p></li>
+<li><p>YouTube video “<a href="https://youtu.be/EP7c0BM2yNo">Precompile
+Lua Modules into LuaJIT Bytecode to Speedup OpenResty Startup</a>”</p>
+<p><a href="https://youtu.be/EP7c0BM2yNo"><img
+src="https://img.youtube.com/vi/EP7c0BM2yNo/0.jpg"
+alt="Precompile Lua Modules into LuaJIT Bytecode to Speedup OpenResty Startup" /></a></p></li>
+</ul>
+<p>You are welcome to subscribe to our <a
+href="https://www.youtube.com/channel/UCXVmwF-UCScv2ftsGoMqxhw">official
+YouTube channel, OpenResty</a>.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="synopsis">Synopsis</h1>
+<pre class="nginx"><code>
+ # set search paths for pure Lua external libraries (&#39;;;&#39; is the default path):
+ lua_package_path &#39;/foo/bar/?.lua;/blah/?.lua;;&#39;;
+
+ # set search paths for Lua external libraries written in C (can also use &#39;;;&#39;):
+ lua_package_cpath &#39;/bar/baz/?.so;/blah/blah/?.so;;&#39;;
+
+ server {
+     location /lua_content {
+         # MIME type determined by default_type:
+         default_type &#39;text/plain&#39;;
+
+         content_by_lua_block {
+             ngx.say(&#39;Hello,world!&#39;)
+         }
+     }
+
+     location /nginx_var {
+         # MIME type determined by default_type:
+         default_type &#39;text/plain&#39;;
+
+         # try access /nginx_var?a=hello,world
+         content_by_lua_block {
+             ngx.say(ngx.var.arg_a)
+         }
+     }
+
+     location = /request_body {
+         client_max_body_size 50k;
+         client_body_buffer_size 50k;
+
+         content_by_lua_block {
+             ngx.req.read_body()  -- explicitly read the req body
+             local data = ngx.req.get_body_data()
+             if data then
+                 ngx.say(&quot;body data:&quot;)
+                 ngx.print(data)
+                 return
+             end
+
+             -- body may get buffered in a temp file:
+             local file = ngx.req.get_body_file()
+             if file then
+                 ngx.say(&quot;body is in file &quot;, file)
+             else
+                 ngx.say(&quot;no body found&quot;)
+             end
+         }
+     }
+
+     # transparent non-blocking I/O in Lua via subrequests
+     # (well, a better way is to use cosockets)
+     location = /lua {
+         # MIME type determined by default_type:
+         default_type &#39;text/plain&#39;;
+
+         content_by_lua_block {
+             local res = ngx.location.capture(&quot;/some_other_location&quot;)
+             if res then
+                 ngx.say(&quot;status: &quot;, res.status)
+                 ngx.say(&quot;body:&quot;)
+                 ngx.print(res.body)
+             end
+         }
+     }
+
+     location = /foo {
+         rewrite_by_lua_block {
+             res = ngx.location.capture(&quot;/memc&quot;,
+                 { args = { cmd = &quot;incr&quot;, key = ngx.var.uri } }
+             )
+         }
+
+         proxy_pass http://blah.blah.com;
+     }
+
+     location = /mixed {
+         rewrite_by_lua_file /path/to/rewrite.lua;
+         access_by_lua_file /path/to/access.lua;
+         content_by_lua_file /path/to/content.lua;
+     }
+
+     # use nginx var in code path
+     # CAUTION: contents in nginx var must be carefully filtered,
+     # otherwise there&#39;ll be great security risk!
+     location ~ ^/app/([-_a-zA-Z0-9/]+) {
+         set $path $1;
+         content_by_lua_file /path/to/lua/app/root/$path.lua;
+     }
+
+     location / {
+        client_max_body_size 100k;
+        client_body_buffer_size 100k;
+
+        access_by_lua_block {
+            -- check the client IP address is in our black list
+            if ngx.var.remote_addr == &quot;132.5.72.3&quot; then
+                ngx.exit(ngx.HTTP_FORBIDDEN)
+            end
+
+            -- check if the URI contains bad words
+            if ngx.var.uri and
+                   string.match(ngx.var.request_body, &quot;evil&quot;)
+            then
+                return ngx.redirect(&quot;/terms_of_use.html&quot;)
+            end
+
+            -- tests passed
+        }
+
+        # proxy_pass/fastcgi_pass/etc settings
+     }
+ }</code></pre>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="description">Description</h1>
+<p>This module embeds <a href="https://luajit.org/luajit.html">LuaJIT
+2.0/2.1</a> into Nginx. It is a core component of <a
+href="https://openresty.org">OpenResty</a>. If you are using this
+module, then you are essentially using OpenResty.</p>
+<p>Since version <code>v0.10.16</code> of this module, the standard Lua
+interpreter (also known as “PUC-Rio Lua”) is not supported anymore. This
+document interchangeably uses the terms “Lua” and “LuaJIT” to refer to
+the LuaJIT interpreter.</p>
+<p>By leveraging Nginx’s subrequests, this module allows the integration
+of the powerful Lua threads (known as Lua “coroutines”) into the Nginx
+event model.</p>
+<p>Unlike <a
+href="https://httpd.apache.org/docs/trunk/mod/mod_lua.html">Apache’s
+mod_lua</a> and <a
+href="http://redmine.lighttpd.net/wiki/1/Docs:ModMagnet">Lighttpd’s
+mod_magnet</a>, Lua code executed using this module can be <em>100%
+non-blocking</em> on network traffic as long as the <a
+href="#nginx-api-for-lua">Nginx API for Lua</a> provided by this module
+is used to handle requests to upstream services such as MySQL,
+PostgreSQL, Memcached, Redis, or upstream HTTP web services.</p>
+<p>At least the following Lua libraries and Nginx modules can be used
+with this module:</p>
+<ul>
+<li><a
+href="https://github.com/openresty/lua-resty-memcached">lua-resty-memcached</a></li>
+<li><a
+href="https://github.com/openresty/lua-resty-mysql">lua-resty-mysql</a></li>
+<li><a
+href="https://github.com/openresty/lua-resty-redis">lua-resty-redis</a></li>
+<li><a
+href="https://github.com/openresty/lua-resty-dns">lua-resty-dns</a></li>
+<li><a
+href="https://github.com/openresty/lua-resty-upload">lua-resty-upload</a></li>
+<li><a
+href="https://github.com/openresty/lua-resty-websocket">lua-resty-websocket</a></li>
+<li><a
+href="https://github.com/openresty/lua-resty-lock">lua-resty-lock</a></li>
+<li><a
+href="https://github.com/cloudflare/lua-resty-logger-socket">lua-resty-logger-socket</a></li>
+<li><a
+href="https://github.com/openresty/lua-resty-lrucache">lua-resty-lrucache</a></li>
+<li><a
+href="https://github.com/openresty/lua-resty-string">lua-resty-string</a></li>
+<li><a
+href="http://github.com/openresty/memc-nginx-module">ngx_memc</a></li>
+<li><a
+href="https://github.com/FRiCKLE/ngx_postgres">ngx_postgres</a></li>
+<li><a
+href="http://github.com/openresty/redis2-nginx-module">ngx_redis2</a></li>
+<li><a href="http://wiki.nginx.org/HttpRedisModule">ngx_redis</a></li>
+<li><a
+href="http://nginx.org/en/docs/http/ngx_http_proxy_module.html">ngx_proxy</a></li>
+<li><a
+href="http://nginx.org/en/docs/http/ngx_http_fastcgi_module.html">ngx_fastcgi</a></li>
+</ul>
+<p>Almost any Nginx modules can be used with this ngx_lua module by
+means of <a href="#ngxlocationcapture">ngx.location.capture</a> or <a
+href="#ngxlocationcapture_multi">ngx.location.capture_multi</a> but it
+is recommended to use those <code>lua-resty-*</code> libraries instead
+of creating subrequests to access the Nginx upstream modules because the
+former is usually much more flexible and memory-efficient.</p>
+<p>The Lua interpreter (also known as “Lua State” or “LuaJIT VM
+instance”) is shared across all the requests in a single Nginx worker
+process to minimize memory use. Request contexts are segregated using
+lightweight Lua coroutines.</p>
+<p>Loaded Lua modules persist in the Nginx worker process level
+resulting in a small memory footprint in Lua even when under heavy
+loads.</p>
+<p>This module is plugged into Nginx’s “http” subsystem so it can only
+speak downstream communication protocols in the HTTP family (HTTP
+0.9/1.0/1.1/2.0, WebSockets, etc…). If you want to do generic TCP
+communications with the downstream clients, then you should use the <a
+href="https://github.com/openresty/stream-lua-nginx-module#readme">ngx_stream_lua</a>
+module instead, which offers a compatible Lua API.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="typical-uses">Typical Uses</h1>
+<p>Just to name a few:</p>
+<ul>
+<li>Mashup’ing and processing outputs of various Nginx upstream outputs
+(proxy, drizzle, postgres, redis, memcached, etc.) in Lua,</li>
+<li>doing arbitrarily complex access control and security checks in Lua
+before requests actually reach the upstream backends,</li>
+<li>manipulating response headers in an arbitrary way (by Lua)</li>
+<li>fetching backend information from external storage backends (like
+redis, memcached, mysql, postgresql) and use that information to choose
+which upstream backend to access on-the-fly,</li>
+<li>coding up arbitrarily complex web applications in a content handler
+using synchronous but still non-blocking access to the database backends
+and other storage,</li>
+<li>doing very complex URL dispatch in Lua at rewrite phase,</li>
+<li>using Lua to implement advanced caching mechanism for Nginx’s
+subrequests and arbitrary locations.</li>
+</ul>
+<p>The possibilities are unlimited as the module allows bringing
+together various elements within Nginx as well as exposing the power of
+the Lua language to the user. The module provides the full flexibility
+of scripting while offering performance levels comparable with native C
+language programs both in terms of CPU time as well as memory footprint
+thanks to LuaJIT 2.x.</p>
+<p>Other scripting language implementations typically struggle to match
+this performance level.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="nginx-compatibility">Nginx Compatibility</h1>
+<p>The latest version of this module is compatible with the following
+versions of Nginx:</p>
+<ul>
+<li>1.25.x (last tested: 1.25.1)</li>
+<li>1.21.x (last tested: 1.21.4)</li>
+<li>1.19.x (last tested: 1.19.3)</li>
+<li>1.17.x (last tested: 1.17.8)</li>
+<li>1.15.x (last tested: 1.15.8)</li>
+<li>1.14.x</li>
+<li>1.13.x (last tested: 1.13.6)</li>
+<li>1.12.x</li>
+<li>1.11.x (last tested: 1.11.2)</li>
+<li>1.10.x</li>
+<li>1.9.x (last tested: 1.9.15)</li>
+<li>1.8.x</li>
+<li>1.7.x (last tested: 1.7.10)</li>
+<li>1.6.x</li>
+</ul>
+<p>Nginx cores older than 1.6.0 (exclusive) are <em>not</em>
+supported.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="installation">Installation</h1>
+<p>It is <em>highly</em> recommended to use <a
+href="https://openresty.org">OpenResty releases</a> which bundle Nginx,
+ngx_lua (this module), LuaJIT, as well as other powerful companion Nginx
+modules and Lua libraries.</p>
+<p>It is discouraged to build this module with Nginx yourself since it
+is tricky to set up exactly right.</p>
+<p>Note that Nginx, LuaJIT, and OpenSSL official releases have various
+limitations and long-standing bugs that can cause some of this module’s
+features to be disabled, not work properly, or run slower. Official
+OpenResty releases are recommended because they bundle <a
+href="https://github.com/openresty/luajit2">OpenResty’s optimized LuaJIT
+2.1 fork</a> and <a
+href="https://github.com/openresty/openresty/tree/master/patches">Nginx/OpenSSL
+patches</a>.</p>
+<p>Alternatively, ngx_lua can be manually compiled into Nginx:</p>
+<ol type="1">
+<li>LuaJIT can be downloaded from the <a
+href="https://github.com/openresty/luajit2/releases">latest release of
+OpenResty’s LuaJIT fork</a>. The official LuaJIT 2.x releases are also
+supported, although performance will be significantly lower for reasons
+elaborated above</li>
+<li>Download the latest version of the ngx_devel_kit (NDK) module <a
+href="https://github.com/simplresty/ngx_devel_kit/tags">HERE</a></li>
+<li>Download the latest version of ngx_lua <a
+href="https://github.com/openresty/lua-nginx-module/tags">HERE</a></li>
+<li>Download the latest supported version of Nginx <a
+href="https://nginx.org/">HERE</a> (See <a
+href="#nginx-compatibility">Nginx Compatibility</a>)</li>
+<li>Download the latest version of the lua-resty-core <a
+href="https://github.com/openresty/lua-resty-core">HERE</a></li>
+<li>Download the latest version of the lua-resty-lrucache <a
+href="https://github.com/openresty/lua-resty-lrucache">HERE</a></li>
+</ol>
+<p>Build the source with this module:</p>
+<div class="sourceCode" id="cb2"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">wget</span> <span class="st">&#39;https://openresty.org/download/nginx-1.19.3.tar.gz&#39;</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a> <span class="fu">tar</span> <span class="at">-xzvf</span> nginx-1.19.3.tar.gz</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a> <span class="bu">cd</span> nginx-1.19.3/</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a> <span class="co"># tell nginx&#39;s build system where to find LuaJIT 2.0:</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a> <span class="bu">export</span> <span class="va">LUAJIT_LIB</span><span class="op">=</span>/path/to/luajit/lib</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a> <span class="bu">export</span> <span class="va">LUAJIT_INC</span><span class="op">=</span>/path/to/luajit/include/luajit-2.0</span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a> <span class="co"># tell nginx&#39;s build system where to find LuaJIT 2.1:</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a> <span class="bu">export</span> <span class="va">LUAJIT_LIB</span><span class="op">=</span>/path/to/luajit/lib</span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a> <span class="bu">export</span> <span class="va">LUAJIT_INC</span><span class="op">=</span>/path/to/luajit/include/luajit-2.1</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a> <span class="co"># Here we assume Nginx is to be installed under /opt/nginx/.</span></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a> <span class="ex">./configure</span> <span class="at">--prefix</span><span class="op">=</span>/opt/nginx <span class="dt">\</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>         <span class="at">--with-ld-opt</span><span class="op">=</span><span class="st">&quot;-Wl,-rpath,/path/to/luajit/lib&quot;</span> <span class="dt">\</span></span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>         <span class="at">--add-module</span><span class="op">=</span>/path/to/ngx_devel_kit <span class="dt">\</span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>         <span class="at">--add-module</span><span class="op">=</span>/path/to/lua-nginx-module</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a> <span class="co"># Note that you may also want to add `./configure` options which are used in your</span></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a> <span class="co"># current nginx build.</span></span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a> <span class="co"># You can get usually those options using command nginx -V</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a> <span class="co"># you can change the parallelism number 2 below to fit the number of spare CPU cores in your</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a> <span class="co"># machine.</span></span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a> <span class="fu">make</span> <span class="at">-j2</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a> <span class="fu">make</span> install</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a> <span class="co"># Note that this version of lug-nginx-module not allow to set `lua_load_resty_core off;` any more.</span></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a> <span class="co"># So, you have to install `lua-resty-core` and `lua-resty-lrucache` manually as below.</span></span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a> <span class="bu">cd</span> lua-resty-core</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a> <span class="fu">make</span> install PREFIX=/opt/nginx</span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a> <span class="bu">cd</span> lua-resty-lrucache</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a> <span class="fu">make</span> install PREFIX=/opt/nginx</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a> <span class="co"># add necessary `lua_package_path` directive to `nginx.conf`, in the http context</span></span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-39"><a href="#cb2-39" aria-hidden="true" tabindex="-1"></a> <span class="ex">lua_package_path</span> <span class="st">&quot;/opt/nginx/lib/lua/?.lua;;&quot;</span><span class="kw">;</span></span></code></pre></div>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="building-as-a-dynamic-module">Building as a dynamic module</h2>
+<p>Starting from NGINX 1.9.11, you can also compile this module as a
+dynamic module, by using the <code>--add-dynamic-module=PATH</code>
+option instead of <code>--add-module=PATH</code> on the
+<code>./configure</code> command line above. And then you can explicitly
+load the module in your <code>nginx.conf</code> via the <a
+href="https://nginx.org/en/docs/ngx_core_module.html#load_module">load_module</a>
+directive, for example,</p>
+<pre class="nginx"><code>
+ load_module /path/to/modules/ndk_http_module.so;  # assuming NDK is built as a dynamic module too
+ load_module /path/to/modules/ngx_http_lua_module.so;</code></pre>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="c-macro-configurations">C Macro Configurations</h2>
+<p>While building this module either via OpenResty or with the Nginx
+core, you can define the following C macros via the C compiler
+options:</p>
+<ul>
+<li><code>NGX_LUA_USE_ASSERT</code> When defined, will enable assertions
+in the ngx_lua C code base. Recommended for debugging or testing builds.
+It can introduce some (small) runtime overhead when enabled. This macro
+was first introduced in the <code>v0.9.10</code> release.</li>
+<li><code>NGX_LUA_ABORT_AT_PANIC</code> When the LuaJIT VM panics,
+ngx_lua will instruct the current nginx worker process to quit
+gracefully by default. By specifying this C macro, ngx_lua will abort
+the current nginx worker process (which usually results in a core dump
+file) immediately. This option is useful for debugging VM panics. This
+option was first introduced in the <code>v0.9.8</code> release.</li>
+</ul>
+<p>To enable one or more of these macros, just pass extra C compiler
+options to the <code>./configure</code> script of either Nginx or
+OpenResty. For instance,</p>
+<pre><code>./configure --with-cc-opt=&quot;-DNGX_LUA_USE_ASSERT -DNGX_LUA_ABORT_AT_PANIC&quot;</code></pre>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="community">Community</h1>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="english-mailing-list">English Mailing List</h2>
+<p>The <a
+href="https://groups.google.com/group/openresty-en">openresty-en</a>
+mailing list is for English speakers.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="chinese-mailing-list">Chinese Mailing List</h2>
+<p>The <a href="https://groups.google.com/group/openresty">openresty</a>
+mailing list is for Chinese speakers.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="code-repository">Code Repository</h1>
+<p>The code repository of this project is hosted on GitHub at <a
+href="https://github.com/openresty/lua-nginx-module">openresty/lua-nginx-module</a>.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="bugs-and-patches">Bugs and Patches</h1>
+<p>Please submit bug reports, wishlists, or patches by</p>
+<ol type="1">
+<li>creating a ticket on the <a
+href="https://github.com/openresty/lua-nginx-module/issues">GitHub Issue
+Tracker</a>,</li>
+<li>or posting to the <a href="#community">OpenResty community</a>.</li>
+</ol>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="luajit-bytecode-support">LuaJIT bytecode support</h1>
+<p>Watch YouTube video “<a href="https://youtu.be/VkRYW_qLoME">Measure
+Execution Time of Lua Code Correctly in OpenResty</a>”</p>
+<p><a href="https://youtu.be/EP7c0BM2yNo"><img
+src="https://img.youtube.com/vi/EP7c0BM2yNo/0.jpg"
+alt="Precompile Lua Modules into LuaJIT Bytecode to Speedup OpenResty Startup" /></a></p>
+<p>As from the <code>v0.5.0rc32</code> release, all
+<code>*_by_lua_file</code> configure directives (such as <a
+href="#content_by_lua_file">content_by_lua_file</a>) support loading
+LuaJIT 2.0/2.1 raw bytecode files directly:</p>
+<div class="sourceCode" id="cb5"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">/path/to/luajit/bin/luajit</span> <span class="at">-b</span> /path/to/input_file.lua /path/to/output_file.ljbc</span></code></pre></div>
+<p>The <code>-bg</code> option can be used to include debug information
+in the LuaJIT bytecode file:</p>
+<div class="sourceCode" id="cb6"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">/path/to/luajit/bin/luajit</span> <span class="at">-bg</span> /path/to/input_file.lua /path/to/output_file.ljbc</span></code></pre></div>
+<p>Please refer to the official LuaJIT documentation on the
+<code>-b</code> option for more details:</p>
+<p><a href="https://luajit.org/running.html#opt_b"
+class="uri">https://luajit.org/running.html#opt_b</a></p>
+<p>Note that the bytecode files generated by LuaJIT 2.1 is <em>not</em>
+compatible with LuaJIT 2.0, and vice versa. The support for LuaJIT 2.1
+bytecode was first added in ngx_lua v0.9.3.</p>
+<p>Attempts to load standard Lua 5.1 bytecode files into ngx_lua
+instances linked to LuaJIT 2.0/2.1 (or vice versa) will result in an
+Nginx error message such as the one below:</p>
+<pre><code>[error] 13909#0: *1 failed to load Lua inlined code: bad byte-code header in /path/to/test_file.luac</code></pre>
+<p>Loading bytecode files via the Lua primitives like
+<code>require</code> and <code>dofile</code> should always work as
+expected.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="system-environment-variable-support">System Environment Variable
+Support</h1>
+<p>If you want to access the system environment variable, say,
+<code>foo</code>, in Lua via the standard Lua API <a
+href="https://www.lua.org/manual/5.1/manual.html#pdf-os.getenv">os.getenv</a>,
+then you should also list this environment variable name in your
+<code>nginx.conf</code> file via the <a
+href="https://nginx.org/en/docs/ngx_core_module.html#env">env
+directive</a>. For example,</p>
+<pre class="nginx"><code>
+ env foo;</code></pre>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="http-1.0-support">HTTP 1.0 support</h1>
+<p>The HTTP 1.0 protocol does not support chunked output and requires an
+explicit <code>Content-Length</code> header when the response body is
+not empty in order to support the HTTP 1.0 keep-alive. So when a HTTP
+1.0 request is made and the <a
+href="#lua_http10_buffering">lua_http10_buffering</a> directive is
+turned <code>on</code>, ngx_lua will buffer the output of <a
+href="#ngxsay">ngx.say</a> and <a href="#ngxprint">ngx.print</a> calls
+and also postpone sending response headers until all the response body
+output is received. At that time ngx_lua can calculate the total length
+of the body and construct a proper <code>Content-Length</code> header to
+return to the HTTP 1.0 client. If the <code>Content-Length</code>
+response header is set in the running Lua code, however, this buffering
+will be disabled even if the <a
+href="#lua_http10_buffering">lua_http10_buffering</a> directive is
+turned <code>on</code>.</p>
+<p>For large streaming output responses, it is important to disable the
+<a href="#lua_http10_buffering">lua_http10_buffering</a> directive to
+minimise memory usage.</p>
+<p>Note that common HTTP benchmark tools such as <code>ab</code> and
+<code>http_load</code> issue HTTP 1.0 requests by default. To force
+<code>curl</code> to send HTTP 1.0 requests, use the <code>-0</code>
+option.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="statically-linking-pure-lua-modules">Statically Linking Pure Lua
+Modules</h1>
+<p>With LuaJIT 2.x, it is possible to statically link the bytecode of
+pure Lua modules into the Nginx executable.</p>
+<p>You can use the <code>luajit</code> executable to compile
+<code>.lua</code> Lua module files to <code>.o</code> object files
+containing the exported bytecode data, and then link the <code>.o</code>
+files directly in your Nginx build.</p>
+<p>Below is a trivial example to demonstrate this. Consider that we have
+the following <code>.lua</code> file named <code>foo.lua</code>:</p>
+<div class="sourceCode" id="cb9"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a> <span class="co">-- foo.lua</span></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="cn">_M</span> <span class="op">=</span> <span class="op">{}</span></span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a> <span class="kw">function</span> <span class="cn">_M</span><span class="op">.</span>go<span class="op">()</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>     <span class="fu">print</span><span class="op">(</span><span class="st">&quot;Hello from foo&quot;</span><span class="op">)</span></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a> <span class="kw">end</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a> <span class="cf">return</span> <span class="cn">_M</span></span></code></pre></div>
+<p>And then we compile this <code>.lua</code> file to <code>foo.o</code>
+file:</p>
+<div class="sourceCode" id="cb10"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">/path/to/luajit/bin/luajit</span> <span class="at">-bg</span> foo.lua foo.o</span></code></pre></div>
+<p>What matters here is the name of the <code>.lua</code> file, which
+determines how you use this module later on the Lua land. The file name
+<code>foo.o</code> does not matter at all except the <code>.o</code>
+file extension (which tells <code>luajit</code> what output format is
+used). If you want to strip the Lua debug information from the resulting
+bytecode, you can just specify the <code>-b</code> option above instead
+of <code>-bg</code>.</p>
+<p>Then when building Nginx or OpenResty, pass the
+<code>--with-ld-opt="foo.o"</code> option to the
+<code>./configure</code> script:</p>
+<div class="sourceCode" id="cb11"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">./configure</span> <span class="at">--with-ld-opt</span><span class="op">=</span><span class="st">&quot;/path/to/foo.o&quot;</span> ...</span></code></pre></div>
+<p>Finally, you can just do the following in any Lua code run by
+ngx_lua:</p>
+<div class="sourceCode" id="cb12"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="va">foo</span> <span class="op">=</span> <span class="fu">require</span> <span class="st">&quot;foo&quot;</span></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a> <span class="va">foo</span><span class="op">.</span>go<span class="op">()</span></span></code></pre></div>
+<p>And this piece of code no longer depends on the external
+<code>foo.lua</code> file any more because it has already been compiled
+into the <code>nginx</code> executable.</p>
+<p>If you want to use dot in the Lua module name when calling
+<code>require</code>, as in</p>
+<div class="sourceCode" id="cb13"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="va">foo</span> <span class="op">=</span> <span class="fu">require</span> <span class="st">&quot;resty.foo&quot;</span></span></code></pre></div>
+<p>then you need to rename the <code>foo.lua</code> file to
+<code>resty_foo.lua</code> before compiling it down to a <code>.o</code>
+file with the <code>luajit</code> command-line utility.</p>
+<p>It is important to use exactly the same version of LuaJIT when
+compiling <code>.lua</code> files to <code>.o</code> files as building
+nginx + ngx_lua. This is because the LuaJIT bytecode format may be
+incompatible between different LuaJIT versions. When the bytecode format
+is incompatible, you will see a Lua runtime error saying that the Lua
+module is not found.</p>
+<p>When you have multiple <code>.lua</code> files to compile and link,
+then just specify their <code>.o</code> files at the same time in the
+value of the <code>--with-ld-opt</code> option. For instance,</p>
+<div class="sourceCode" id="cb14"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">./configure</span> <span class="at">--with-ld-opt</span><span class="op">=</span><span class="st">&quot;/path/to/foo.o /path/to/bar.o&quot;</span> ...</span></code></pre></div>
+<p>If you have too many <code>.o</code> files, then it might not be
+feasible to name them all in a single command. In this case, you can
+build a static library (or archive) for your <code>.o</code> files, as
+in</p>
+<div class="sourceCode" id="cb15"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">ar</span> rcus libmyluafiles.a <span class="pp">*</span>.o</span></code></pre></div>
+<p>then you can link the <code>myluafiles</code> archive as a whole to
+your nginx executable:</p>
+<div class="sourceCode" id="cb16"><pre
+class="sourceCode bash"><code class="sourceCode bash"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a> <span class="ex">./configure</span> <span class="dt">\</span></span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>     <span class="at">--with-ld-opt</span><span class="op">=</span><span class="st">&quot;-L/path/to/lib -Wl,--whole-archive -lmyluafiles -Wl,--no-whole-archive&quot;</span></span></code></pre></div>
+<p>where <code>/path/to/lib</code> is the path of the directory
+containing the <code>libmyluafiles.a</code> file. It should be noted
+that the linker option <code>--whole-archive</code> is required here
+because otherwise our archive will be skipped because no symbols in our
+archive are mentioned in the main parts of the nginx executable.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="data-sharing-within-an-nginx-worker">Data Sharing within an
+Nginx Worker</h1>
+<p>To globally share data among all the requests handled by the same
+Nginx worker process, encapsulate the shared data into a Lua module, use
+the Lua <code>require</code> builtin to import the module, and then
+manipulate the shared data in Lua. This works because required Lua
+modules are loaded only once and all coroutines will share the same copy
+of the module (both its code and data).</p>
+<p>Note that the use of global Lua variables is <em>strongly
+discouraged</em>, as it may lead to unexpected race conditions between
+concurrent requests.</p>
+<p>Here is a small example on sharing data within an Nginx worker via a
+Lua module:</p>
+<div class="sourceCode" id="cb17"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a> <span class="co">-- mydata.lua</span></span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="cn">_M</span> <span class="op">=</span> <span class="op">{}</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="va">data</span> <span class="op">=</span> <span class="op">{</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>     <span class="va">dog</span> <span class="op">=</span> <span class="dv">3</span><span class="op">,</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>     <span class="va">cat</span> <span class="op">=</span> <span class="dv">4</span><span class="op">,</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>     <span class="va">pig</span> <span class="op">=</span> <span class="dv">5</span><span class="op">,</span></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a> <span class="op">}</span></span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a> <span class="kw">function</span> <span class="cn">_M</span><span class="op">.</span>get_age<span class="op">(</span><span class="va">name</span><span class="op">)</span></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>     <span class="cf">return</span> <span class="va">data</span><span class="op">[</span><span class="va">name</span><span class="op">]</span></span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a> <span class="kw">end</span></span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a> <span class="cf">return</span> <span class="cn">_M</span></span></code></pre></div>
+<p>and then accessing it from <code>nginx.conf</code>:</p>
+<pre class="nginx"><code>
+ location /lua {
+     content_by_lua_block {
+         local mydata = require &quot;mydata&quot;
+         ngx.say(mydata.get_age(&quot;dog&quot;))
+     }
+ }</code></pre>
+<p>The <code>mydata</code> module in this example will only be loaded
+and run on the first request to the location <code>/lua</code>, and all
+subsequent requests to the same Nginx worker process will use the
+reloaded instance of the module as well as the same copy of the data in
+it, until a <code>HUP</code> signal is sent to the Nginx master process
+to force a reload. This data sharing technique is essential for high
+performance Lua applications based on this module.</p>
+<p>Note that this data sharing is on a <em>per-worker</em> basis and not
+on a <em>per-server</em> basis. That is, when there are multiple Nginx
+worker processes under an Nginx master, data sharing cannot cross the
+process boundary between these workers.</p>
+<p>It is usually recommended to share read-only data this way. You can
+also share changeable data among all the concurrent requests of each
+Nginx worker process as long as there is <em>no</em> nonblocking I/O
+operations (including <a href="#ngxsleep">ngx.sleep</a>) in the middle
+of your calculations. As long as you do not give the control back to the
+Nginx event loop and ngx_lua’s light thread scheduler (even implicitly),
+there can never be any race conditions in between. For this reason,
+always be very careful when you want to share changeable data on the
+worker level. Buggy optimizations can easily lead to hard-to-debug race
+conditions under load.</p>
+<p>If server-wide data sharing is required, then use one or more of the
+following approaches:</p>
+<ol type="1">
+<li>Use the <a href="#ngxshareddict">ngx.shared.DICT</a> API provided by
+this module.</li>
+<li>Use only a single Nginx worker and a single server (this is however
+not recommended when there is a multi core CPU or multiple CPUs in a
+single machine).</li>
+<li>Use data storage mechanisms such as <code>memcached</code>,
+<code>redis</code>, <code>MySQL</code> or <code>PostgreSQL</code>. <a
+href="https://openresty.org">The OpenResty official releases</a> come
+with a set of companion Nginx modules and Lua libraries that provide
+interfaces with these data storage mechanisms.</li>
+</ol>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="known-issues">Known Issues</h1>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="tcp-socket-connect-operation-issues">TCP socket connect
+operation issues</h2>
+<p>The <a href="#tcpsockconnect">tcpsock:connect</a> method may indicate
+<code>success</code> despite connection failures such as with
+<code>Connection Refused</code> errors.</p>
+<p>However, later attempts to manipulate the cosocket object will fail
+and return the actual error status message generated by the failed
+connect operation.</p>
+<p>This issue is due to limitations in the Nginx event model and only
+appears to affect Mac OS X.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="lua-coroutine-yieldingresuming">Lua Coroutine
+Yielding/Resuming</h2>
+<ul>
+<li>Because Lua’s <code>dofile</code> and <code>require</code> builtins
+are currently implemented as C functions in LuaJIT 2.0/2.1, if the Lua
+file being loaded by <code>dofile</code> or <code>require</code> invokes
+<a href="#ngxlocationcapture">ngx.location.capture*</a>, <a
+href="#ngxexec">ngx.exec</a>, <a href="#ngxexit">ngx.exit</a>, or other
+API functions requiring yielding in the <em>top-level</em> scope of the
+Lua file, then the Lua error “attempt to yield across C-call boundary”
+will be raised. To avoid this, put these calls requiring yielding into
+your own Lua functions in the Lua file instead of the top-level scope of
+the file.</li>
+</ul>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="lua-variable-scope">Lua Variable Scope</h2>
+<p>Care must be taken when importing modules, and this form should be
+used:</p>
+<div class="sourceCode" id="cb19"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="va">xxx</span> <span class="op">=</span> <span class="fu">require</span><span class="op">(</span><span class="st">&#39;xxx&#39;</span><span class="op">)</span></span></code></pre></div>
+<p>instead of the old deprecated form:</p>
+<div class="sourceCode" id="cb20"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a> <span class="fu">require</span><span class="op">(</span><span class="st">&#39;xxx&#39;</span><span class="op">)</span></span></code></pre></div>
+<p>Here is the reason: by design, the global environment has exactly the
+same lifetime as the Nginx request handler associated with it. Each
+request handler has its own set of Lua global variables and that is the
+idea of request isolation. The Lua module is actually loaded by the
+first Nginx request handler and is cached by the <code>require()</code>
+built-in in the <code>package.loaded</code> table for later reference,
+and the <code>module()</code> builtin used by some Lua modules has the
+side effect of setting a global variable to the loaded module table. But
+this global variable will be cleared at the end of the request handler,
+and every subsequent request handler all has its own (clean) global
+environment. So one will get Lua exception for accessing the
+<code>nil</code> value.</p>
+<p>The use of Lua global variables is a generally inadvisable in the
+ngx_lua context as:</p>
+<ol type="1">
+<li>the misuse of Lua globals has detrimental side effects on concurrent
+requests when such variables should instead be local in scope,</li>
+<li>Lua global variables require Lua table look-ups in the global
+environment which is computationally expensive, and</li>
+<li>some Lua global variable references may include typing errors which
+make such difficult to debug.</li>
+</ol>
+<p>It is therefore <em>highly</em> recommended to always declare such
+within an appropriate local scope instead.</p>
+<div class="sourceCode" id="cb21"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a> <span class="co">-- Avoid</span></span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a> <span class="va">foo</span> <span class="op">=</span> <span class="dv">123</span></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a> <span class="co">-- Recommended</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="va">foo</span> <span class="op">=</span> <span class="dv">123</span></span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a> <span class="co">-- Avoid</span></span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a> <span class="kw">function</span> foo<span class="op">()</span> <span class="cf">return</span> <span class="dv">123</span> <span class="kw">end</span></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a> <span class="co">-- Recommended</span></span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="kw">function</span> foo<span class="op">()</span> <span class="cf">return</span> <span class="dv">123</span> <span class="kw">end</span></span></code></pre></div>
+<p>To find all instances of Lua global variables in your Lua code, run
+the <a
+href="https://github.com/openresty/nginx-devel-utils/blob/master/lua-releng">lua-releng
+tool</a> across all <code>.lua</code> source files:</p>
+<pre><code>$ lua-releng
+Checking use of Lua global variables in file lib/foo/bar.lua ...
+        1       [1489]  SETGLOBAL       7 -1    ; contains
+        55      [1506]  GETGLOBAL       7 -3    ; setvar
+        3       [1545]  GETGLOBAL       3 -4    ; varexpand</code></pre>
+<p>The output says that the line 1489 of file
+<code>lib/foo/bar.lua</code> writes to a global variable named
+<code>contains</code>, the line 1506 reads from the global variable
+<code>setvar</code>, and line 1545 reads the global
+<code>varexpand</code>.</p>
+<p>This tool will guarantee that local variables in the Lua module
+functions are all declared with the <code>local</code> keyword,
+otherwise a runtime exception will be thrown. It prevents undesirable
+race conditions while accessing such variables. See <a
+href="#data-sharing-within-an-nginx-worker">Data Sharing within an Nginx
+Worker</a> for the reasons behind this.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2
+id="locations-configured-by-subrequest-directives-of-other-modules">Locations
+Configured by Subrequest Directives of Other Modules</h2>
+<p>The <a href="#ngxlocationcapture">ngx.location.capture</a> and <a
+href="#ngxlocationcapture_multi">ngx.location.capture_multi</a>
+directives cannot capture locations that include the <a
+href="http://nginx.org/en/docs/http/ngx_http_addition_module.html#add_before_body">add_before_body</a>,
+<a
+href="http://nginx.org/en/docs/http/ngx_http_addition_module.html#add_after_body">add_after_body</a>,
+<a
+href="https://nginx.org/en/docs/http/ngx_http_auth_request_module.html#auth_request">auth_request</a>,
+<a
+href="http://github.com/openresty/echo-nginx-module#echo_location">echo_location</a>,
+<a
+href="http://github.com/openresty/echo-nginx-module#echo_location_async">echo_location_async</a>,
+<a
+href="http://github.com/openresty/echo-nginx-module#echo_subrequest">echo_subrequest</a>,
+or <a
+href="http://github.com/openresty/echo-nginx-module#echo_subrequest_async">echo_subrequest_async</a>
+directives.</p>
+<pre class="nginx"><code>
+ location /foo {
+     content_by_lua_block {
+         res = ngx.location.capture(&quot;/bar&quot;)
+     }
+ }
+ location /bar {
+     echo_location /blah;
+ }
+ location /blah {
+     echo &quot;Success!&quot;;
+ }</code></pre>
+<pre class="nginx"><code>
+ $ curl -i http://example.com/foo</code></pre>
+<p>will not work as expected.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="cosockets-not-available-everywhere">Cosockets Not Available
+Everywhere</h2>
+<p>Due to internal limitations in the Nginx core, the cosocket API is
+disabled in the following contexts: <a
+href="#set_by_lua">set_by_lua*</a>, <a
+href="#log_by_lua">log_by_lua*</a>, <a
+href="#header_filter_by_lua">header_filter_by_lua*</a>, and <a
+href="#body_filter_by_lua">body_filter_by_lua</a>.</p>
+<p>The cosockets are currently also disabled in the <a
+href="#init_by_lua">init_by_lua*</a> and <a
+href="#init_worker_by_lua">init_worker_by_lua*</a> directive contexts
+but we may add support for these contexts in the future because there is
+no limitation in the Nginx core (or the limitation might be worked
+around).</p>
+<p>There exists a workaround, however, when the original context does
+<em>not</em> need to wait for the cosocket results. That is, creating a
+zero-delay timer via the <a href="#ngxtimerat">ngx.timer.at</a> API and
+do the cosocket results in the timer handler, which runs asynchronously
+as to the original context creating the timer.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="special-escaping-sequences">Special Escaping Sequences</h2>
+<p><strong>NOTE</strong> Following the <code>v0.9.17</code> release,
+this pitfall can be avoided by using the <code>*_by_lua_block {}</code>
+configuration directives.</p>
+<p>PCRE sequences such as <code>\d</code>, <code>\s</code>, or
+<code>\w</code>, require special attention because in string literals,
+the backslash character, <code>\</code>, is stripped out by both the Lua
+language parser and by the Nginx config file parser before processing if
+not within a <code>*_by_lua_block {}</code> directive. So the following
+snippet will not work as expected:</p>
+<pre class="nginx"><code>
+ # nginx.conf
+ ? location /test {
+ ?     content_by_lua &#39;
+ ?         local regex = &quot;\d+&quot;  -- THIS IS WRONG OUTSIDE OF A *_by_lua_block DIRECTIVE
+ ?         local m = ngx.re.match(&quot;hello, 1234&quot;, regex)
+ ?         if m then ngx.say(m[0]) else ngx.say(&quot;not matched!&quot;) end
+ ?     &#39;;
+ ? }
+ # evaluates to &quot;not matched!&quot;</code></pre>
+<p>To avoid this, <em>double</em> escape the backslash:</p>
+<pre class="nginx"><code>
+ # nginx.conf
+ location /test {
+     content_by_lua &#39;
+         local regex = &quot;\\\\d+&quot;
+         local m = ngx.re.match(&quot;hello, 1234&quot;, regex)
+         if m then ngx.say(m[0]) else ngx.say(&quot;not matched!&quot;) end
+     &#39;;
+ }
+ # evaluates to &quot;1234&quot;</code></pre>
+<p>Here, <code>\\\\d+</code> is stripped down to <code>\\d+</code> by
+the Nginx config file parser and this is further stripped down to
+<code>\d+</code> by the Lua language parser before running.</p>
+<p>Alternatively, the regex pattern can be presented as a long-bracketed
+Lua string literal by encasing it in “long brackets”,
+<code>[[...]]</code>, in which case backslashes have to only be escaped
+once for the Nginx config file parser.</p>
+<pre class="nginx"><code>
+ # nginx.conf
+ location /test {
+     content_by_lua &#39;
+         local regex = [[\\d+]]
+         local m = ngx.re.match(&quot;hello, 1234&quot;, regex)
+         if m then ngx.say(m[0]) else ngx.say(&quot;not matched!&quot;) end
+     &#39;;
+ }
+ # evaluates to &quot;1234&quot;</code></pre>
+<p>Here, <code>[[\\d+]]</code> is stripped down to <code>[[\d+]]</code>
+by the Nginx config file parser and this is processed correctly.</p>
+<p>Note that a longer from of the long bracket, <code>[=[...]=]</code>,
+may be required if the regex pattern contains <code>[...]</code>
+sequences. The <code>[=[...]=]</code> form may be used as the default
+form if desired.</p>
+<pre class="nginx"><code>
+ # nginx.conf
+ location /test {
+     content_by_lua &#39;
+         local regex = [=[[0-9]+]=]
+         local m = ngx.re.match(&quot;hello, 1234&quot;, regex)
+         if m then ngx.say(m[0]) else ngx.say(&quot;not matched!&quot;) end
+     &#39;;
+ }
+ # evaluates to &quot;1234&quot;</code></pre>
+<p>An alternative approach to escaping PCRE sequences is to ensure that
+Lua code is placed in external script files and executed using the
+various <code>*_by_lua_file</code> directives. With this approach, the
+backslashes are only stripped by the Lua language parser and therefore
+only need to be escaped once each.</p>
+<div class="sourceCode" id="cb29"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a> <span class="co">-- test.lua</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="va">regex</span> <span class="op">=</span> <span class="st">&quot;</span><span class="sc">\\</span><span class="st">d+&quot;</span></span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="va">m</span> <span class="op">=</span> <span class="va">ngx</span><span class="op">.</span><span class="va">re</span><span class="op">.</span>match<span class="op">(</span><span class="st">&quot;hello, 1234&quot;</span><span class="op">,</span> <span class="va">regex</span><span class="op">)</span></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> <span class="va">m</span> <span class="cf">then</span> <span class="va">ngx</span><span class="op">.</span>say<span class="op">(</span><span class="va">m</span><span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="cf">else</span> <span class="va">ngx</span><span class="op">.</span>say<span class="op">(</span><span class="st">&quot;not matched!&quot;</span><span class="op">)</span> <span class="cf">end</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a> <span class="co">-- evaluates to &quot;1234&quot;</span></span></code></pre></div>
+<p>Within external script files, PCRE sequences presented as
+long-bracketed Lua string literals do not require modification.</p>
+<div class="sourceCode" id="cb30"><pre
+class="sourceCode lua"><code class="sourceCode lua"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a> <span class="co">-- test.lua</span></span>
+<span id="cb30-3"><a href="#cb30-3" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="va">regex</span> <span class="op">=</span> <span class="vs">[[\d+]]</span></span>
+<span id="cb30-4"><a href="#cb30-4" aria-hidden="true" tabindex="-1"></a> <span class="kw">local</span> <span class="va">m</span> <span class="op">=</span> <span class="va">ngx</span><span class="op">.</span><span class="va">re</span><span class="op">.</span>match<span class="op">(</span><span class="st">&quot;hello, 1234&quot;</span><span class="op">,</span> <span class="va">regex</span><span class="op">)</span></span>
+<span id="cb30-5"><a href="#cb30-5" aria-hidden="true" tabindex="-1"></a> <span class="cf">if</span> <span class="va">m</span> <span class="cf">then</span> <span class="va">ngx</span><span class="op">.</span>say<span class="op">(</span><span class="va">m</span><span class="op">[</span><span class="dv">0</span><span class="op">])</span> <span class="cf">else</span> <span class="va">ngx</span><span class="op">.</span>say<span class="op">(</span><span class="st">&quot;not matched!&quot;</span><span class="op">)</span> <span class="cf">end</span></span>
+<span id="cb30-6"><a href="#cb30-6" aria-hidden="true" tabindex="-1"></a> <span class="co">-- evaluates to &quot;1234&quot;</span></span></code></pre></div>
+<p>As noted earlier, PCRE sequences presented within
+<code>*_by_lua_block {}</code> directives (available following the
+<code>v0.9.17</code> release) do not require modification.</p>
+<pre class="nginx"><code>
+ # nginx.conf
+ location /test {
+     content_by_lua_block {
+         local regex = [[\d+]]
+         local m = ngx.re.match(&quot;hello, 1234&quot;, regex)
+         if m then ngx.say(m[0]) else ngx.say(&quot;not matched!&quot;) end
+     }
+ }
+ # evaluates to &quot;1234&quot;</code></pre>
+<p><strong>NOTE</strong> You are recommended to use
+<code>by_lua_file</code> when the Lua code is very long.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="mixing-with-ssi-not-supported">Mixing with SSI Not
+Supported</h2>
+<p>Mixing SSI with ngx_lua in the same Nginx request is not supported at
+all. Just use ngx_lua exclusively. Everything you can do with SSI can be
+done atop ngx_lua anyway and it can be more efficient when using
+ngx_lua.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="spdy-mode-not-fully-supported">SPDY Mode Not Fully
+Supported</h2>
+<p>Certain Lua APIs provided by ngx_lua do not work in Nginx’s SPDY mode
+yet: <a href="#ngxlocationcapture">ngx.location.capture</a>, <a
+href="#ngxlocationcapture_multi">ngx.location.capture_multi</a>, and <a
+href="#ngxreqsocket">ngx.req.socket</a>.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="missing-data-on-short-circuited-requests">Missing data on short
+circuited requests</h2>
+<p>Nginx may terminate a request early with (at least):</p>
+<ul>
+<li>400 (Bad Request)</li>
+<li>405 (Not Allowed)</li>
+<li>408 (Request Timeout)</li>
+<li>413 (Request Entity Too Large)</li>
+<li>414 (Request URI Too Large)</li>
+<li>494 (Request Headers Too Large)</li>
+<li>499 (Client Closed Request)</li>
+<li>500 (Internal Server Error)</li>
+<li>501 (Not Implemented)</li>
+</ul>
+<p>This means that phases that normally run are skipped, such as the
+rewrite or access phase. This also means that later phases that are run
+regardless, e.g. <a href="#log_by_lua">log_by_lua</a>, will not have
+access to information that is normally set in those phases.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="todo">TODO</h1>
+<ul>
+<li>cosocket: implement LuaSocket’s unconnected UDP API.</li>
+<li>cosocket: add support in the context of <a
+href="#init_by_lua">init_by_lua*</a>.</li>
+<li>cosocket: review and merge aviramc’s <a
+href="https://github.com/openresty/lua-nginx-module/pull/290">patch</a>
+for adding the <code>bsdrecv</code> method.</li>
+<li>cosocket: add configure options for different strategies of handling
+the cosocket connection exceeding in the pools.</li>
+<li>use <code>ngx_hash_t</code> to optimize the built-in header look-up
+process for <a href="#ngxreqset_header">ngx.req.set_header</a>, and
+etc.</li>
+<li>add <code>ignore_resp_headers</code>, <code>ignore_resp_body</code>,
+and <code>ignore_resp</code> options to <a
+href="#ngxlocationcapture">ngx.location.capture</a> and <a
+href="#ngxlocationcapture_multi">ngx.location.capture_multi</a> methods,
+to allow micro performance tuning on the user side.</li>
+<li>add automatic Lua code time slicing support by yielding and resuming
+the Lua VM actively via Lua’s debug hooks.</li>
+<li>add <code>stat</code> mode similar to <a
+href="https://httpd.apache.org/docs/trunk/mod/mod_lua.html">mod_lua</a>.</li>
+</ul>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="changes">Changes</h1>
+<p>The changes made in every release of this module are listed in the
+change logs of the OpenResty bundle:</p>
+<p><a href="https://openresty.org/#Changes"
+class="uri">https://openresty.org/#Changes</a></p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="test-suite">Test Suite</h1>
+<p>The following dependencies are required to run the test suite:</p>
+<ul>
+<li><p>Nginx version &gt;= 1.4.2</p></li>
+<li><p>Perl modules:</p>
+<ul>
+<li>Test::Nginx: <a href="https://github.com/openresty/test-nginx"
+class="uri">https://github.com/openresty/test-nginx</a></li>
+</ul></li>
+<li><p>Nginx modules:</p>
+<ul>
+<li><a
+href="https://github.com/simplresty/ngx_devel_kit">ngx_devel_kit</a></li>
+<li><a
+href="https://github.com/openresty/set-misc-nginx-module">ngx_set_misc</a></li>
+<li><a
+href="http://mdounin.ru/files/ngx_http_auth_request_module-0.2.tar.gz">ngx_auth_request</a>
+(this is not needed if you’re using Nginx 1.5.4+.</li>
+<li><a
+href="https://github.com/openresty/echo-nginx-module">ngx_echo</a></li>
+<li><a
+href="https://github.com/openresty/memc-nginx-module">ngx_memc</a></li>
+<li><a
+href="https://github.com/openresty/srcache-nginx-module">ngx_srcache</a></li>
+<li>ngx_lua (i.e., this module)</li>
+<li><a
+href="https://github.com/openresty/lua-upstream-nginx-module">ngx_lua_upstream</a></li>
+<li><a
+href="https://github.com/openresty/headers-more-nginx-module">ngx_headers_more</a></li>
+<li><a
+href="https://github.com/openresty/drizzle-nginx-module">ngx_drizzle</a></li>
+<li><a
+href="https://github.com/openresty/rds-json-nginx-module">ngx_rds_json</a></li>
+<li><a
+href="https://github.com/FRiCKLE/ngx_coolkit">ngx_coolkit</a></li>
+<li><a
+href="https://github.com/openresty/redis2-nginx-module">ngx_redis2</a></li>
+</ul></li>
+</ul>
+<p>The order in which these modules are added during configuration is
+important because the position of any filter module in the filtering
+chain determines the final output, for example. The correct adding order
+is shown above.</p>
+<ul>
+<li>3rd-party Lua libraries:
+<ul>
+<li><a
+href="https://www.kyne.au/~mark/software/lua-cjson.php">lua-cjson</a></li>
+</ul></li>
+<li>Applications:
+<ul>
+<li>mysql: create database ‘ngx_test’, grant all privileges to user
+‘ngx_test’, password is ‘ngx_test’</li>
+<li>memcached: listening on the default port, 11211.</li>
+<li>redis: listening on the default port, 6379.</li>
+</ul></li>
+</ul>
+<p>See also the <a
+href="https://github.com/openresty/lua-nginx-module/blob/master/util/build.sh">developer
+build script</a> for more details on setting up the testing
+environment.</p>
+<p>To run the whole test suite in the default testing mode:</p>
+<pre><code>cd /path/to/lua-nginx-module
+export PATH=/path/to/your/nginx/sbin:$PATH
+prove -I/path/to/test-nginx/lib -r t</code></pre>
+<p>To run specific test files:</p>
+<pre><code>cd /path/to/lua-nginx-module
+export PATH=/path/to/your/nginx/sbin:$PATH
+prove -I/path/to/test-nginx/lib t/002-content.t t/003-errors.t</code></pre>
+<p>To run a specific test block in a particular test file, add the line
+<code>--- ONLY</code> to the test block you want to run, and then use
+the <code>prove</code> utility to run that <code>.t</code> file.</p>
+<p>There are also various testing modes based on mockeagain, valgrind,
+and etc. Refer to the <a
+href="https://search.cpan.org/perldoc?Test::Nginx">Test::Nginx
+documentation</a> for more details for various advanced testing modes.
+See also the test reports for the Nginx test cluster running on Amazon
+EC2: <a href="https://qa.openresty.org"
+class="uri">https://qa.openresty.org</a>.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="copyright-and-license">Copyright and License</h1>
+<p>This module is licensed under the BSD license.</p>
+<p>Copyright (C) 2009-2017, by Xiaozhe Wang (chaoslawful) <a
+href="mailto:chaoslawful@gmail.com"
+class="email">chaoslawful@gmail.com</a>.</p>
+<p>Copyright (C) 2009-2019, by Yichun “agentzh” Zhang (章亦春) <a
+href="mailto:agentzh@gmail.com" class="email">agentzh@gmail.com</a>,
+OpenResty Inc.</p>
+<p>All rights reserved.</p>
+<p>Redistribution and use in source and binary forms, with or without
+modification, are permitted provided that the following conditions are
+met:</p>
+<ul>
+<li><p>Redistributions of source code must retain the above copyright
+notice, this list of conditions and the following disclaimer.</p></li>
+<li><p>Redistributions in binary form must reproduce the above copyright
+notice, this list of conditions and the following disclaimer in the
+documentation and/or other materials provided with the
+distribution.</p></li>
+</ul>
+<p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+“AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED
+TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR
+PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF
+LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING
+NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS
+SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h1 id="see-also">See Also</h1>
+<p>Blog posts:</p>
+<ul>
+<li><a
+href="https://blog.openresty.com/en/lua-cpu-flame-graph/?src=gh_ngxlua">Introduction
+to Lua-Land CPU Flame Graphs</a></li>
+<li><a
+href="https://blog.openresty.com/en//how-or-alloc-mem?src=gh_ngxlua">How
+OpenResty and Nginx Allocate and Manage Memory</a></li>
+<li><a
+href="https://blog.openresty.com/en/how-nginx-shm-consume-ram/?src=gh_ngxlua">How
+OpenResty and Nginx Shared Memory Zones Consume RAM</a></li>
+<li><a
+href="https://blog.openresty.com/en/nginx-shm-frag/?src=gh_ngxlua">Memory
+Fragmentation in OpenResty and Nginx’s Shared Memory Zones</a></li>
+</ul>
+<p>Other related modules and libraries:</p>
+<ul>
+<li><a
+href="https://github.com/openresty/stream-lua-nginx-module#readme">ngx_stream_lua_module</a>
+for an official port of this module for the Nginx “stream” subsystem
+(doing generic downstream TCP communications).</li>
+<li><a
+href="https://github.com/openresty/lua-resty-memcached">lua-resty-memcached</a>
+library based on ngx_lua cosocket.</li>
+<li><a
+href="https://github.com/openresty/lua-resty-redis">lua-resty-redis</a>
+library based on ngx_lua cosocket.</li>
+<li><a
+href="https://github.com/openresty/lua-resty-mysql">lua-resty-mysql</a>
+library based on ngx_lua cosocket.</li>
+<li><a
+href="https://github.com/openresty/lua-resty-upload">lua-resty-upload</a>
+library based on ngx_lua cosocket.</li>
+<li><a
+href="https://github.com/openresty/lua-resty-dns">lua-resty-dns</a>
+library based on ngx_lua cosocket.</li>
+<li><a
+href="https://github.com/openresty/lua-resty-websocket">lua-resty-websocket</a>
+library for both WebSocket server and client, based on ngx_lua
+cosocket.</li>
+<li><a
+href="https://github.com/openresty/lua-resty-string">lua-resty-string</a>
+library based on <a href="https://luajit.org/ext_ffi.html">LuaJIT
+FFI</a>.</li>
+<li><a
+href="https://github.com/openresty/lua-resty-lock">lua-resty-lock</a>
+library for a nonblocking simple lock API.</li>
+<li><a
+href="https://github.com/cloudflare/lua-resty-cookie">lua-resty-cookie</a>
+library for HTTP cookie manipulation.</li>
+<li><a
+href="https://openresty.org/#RoutingMySQLQueriesBasedOnURIArgs">Routing
+requests to different MySQL queries based on URI arguments</a></li>
+<li><a href="https://openresty.org/#DynamicRoutingBasedOnRedis">Dynamic
+Routing Based on Redis and Lua</a></li>
+<li><a href="https://openresty.org/#UsingLuaRocks">Using LuaRocks with
+ngx_lua</a></li>
+<li><a
+href="https://github.com/openresty/lua-nginx-module/wiki/Introduction">Introduction
+to ngx_lua</a></li>
+<li><a
+href="https://github.com/simplresty/ngx_devel_kit">ngx_devel_kit</a></li>
+<li><a
+href="http://github.com/openresty/echo-nginx-module">echo-nginx-module</a></li>
+<li><a
+href="http://github.com/openresty/drizzle-nginx-module">drizzle-nginx-module</a></li>
+<li><a
+href="https://github.com/FRiCKLE/ngx_postgres">postgres-nginx-module</a></li>
+<li><a
+href="http://github.com/openresty/memc-nginx-module">memc-nginx-module</a></li>
+<li><a href="https://openresty.org">The OpenResty bundle</a></li>
+<li><a href="https://github.com/openresty/nginx-systemtap-toolkit">Nginx
+Systemtap Toolkit</a></li>
+</ul>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+
+
+<h1 id="obsolete-sections">Obsolete Sections</h1>
+<p>This section is just holding obsolete documentation sections that
+have been either renamed or removed so that existing links over the web
+are still valid.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="special-pcre-sequences">Special PCRE Sequences</h2>
+<p>This section has been renamed to <a
+href="#special-escaping-sequences">Special Escaping Sequences</a>.</p>
+<p><a href="#table-of-contents">Back to TOC</a></p>
+<h2 id="lualuajit-bytecode-support">Lua/LuaJIT bytecode support</h2>
+<p>This section has been renamed to <a
+href="#luajit-bytecode-support">LuaJIT bytecode support</a>. As of
+version <code>v0.10.16</code> of this module, the standard Lua
+interpreter (also known as “PUC-Rio Lua”) is not supported anymore.</p>
+</body>
+</html>
